@@ -38,7 +38,8 @@ function getInputParams() {
     const inputBold = parseInt(document.getElementById('input-bold').value);
     const inputAmount = parseInt(document.getElementById('input-amount').value);
     const inputTextile = parseInt(document.getElementById('input-textile').value);
-    return { inputCant, inputWidth, inputLength, inputBold, inputAmount, inputTextile };
+    const inputTextileCost = parseInt(document.getElementById('input-textile-cost').value);
+    return { inputCant, inputWidth, inputLength, inputBold, inputAmount, inputTextile, inputTextileCost};
 }
 
 function checkCant(inputCant) {
@@ -48,6 +49,11 @@ function checkCant(inputCant) {
         alert("Введено неверное значение канта");
         return 0;
     }
+}
+
+function calculateTextileCost(inputTextileCost, totalHeight){
+    const totalTextileCost = inputTextileCost * (totalHeight / 1000);
+    return totalTextileCost;
 }
 
 function countDetails(inputWidth, inputLength, inputBold, inputAmount, scaleUp, inputTextile) {
@@ -70,7 +76,7 @@ function countDetails(inputWidth, inputLength, inputBold, inputAmount, scaleUp, 
 }
 
 function addMattress() {
-    const { inputCant, inputWidth, inputLength, inputBold, inputAmount, inputTextile } = getInputParams();
+    const { inputCant, inputWidth, inputLength, inputBold, inputAmount, inputTextile, inputTextileCost } = getInputParams();
     const scaleUp = checkCant(inputCant);
     if (scaleUp === 0) {
         return;
@@ -84,6 +90,7 @@ function addMattress() {
         inputBold,
         inputAmount,
         inputTextile,
+        inputTextileCost,
         details: mattressDetails
     });
 
@@ -113,18 +120,26 @@ function updateMattressList() {
 
 function calculate() {
     details = [];
+    
     mattressList.forEach(mattress => {
         details.push(...mattress.details);
     });
 
     const inputTextile = mattressList.length > 0 ? mattressList[0].inputTextile : 0;
-    const totalHeight = bestFit(inputTextile, details);
-    document.getElementById('total-height').textContent = `Необходимая длина рулона: ${totalHeight.totalHeight}`;
+    const totalHeight = bestFit(inputTextile, details).totalHeight;
+
+    // Взяли новую стоимость из поля ввода
+    const inputTextileCost = parseInt(document.getElementById('input-textile-cost').value);
+
+    const totalTextileCost = calculateTextileCost(inputTextileCost, totalHeight);
+    document.getElementById('total-height').textContent = `Необходимая длина рулона: ${totalHeight}`;
     
     const detailsFormatted = details.map(d => `${d[0]}*${d[1]}`).join(', ');
     document.getElementById('details-list').textContent = `Детали: ${detailsFormatted}`;
     
     document.getElementById('total-details').textContent = `Общее количество деталей: ${details.length}`;
+
+    document.getElementById('textile-cost').textContent = `Цена за рулон: ${totalTextileCost} руб.`;
 
     document.getElementById('visualize-button').disabled = false;
 }
@@ -186,4 +201,9 @@ document.getElementById('input-amount').addEventListener('input', checkFormCompl
 document.getElementById('input-textile').addEventListener('input', (event) => {
     document.getElementById('input-textile-output').value = event.target.value;
     checkFormCompletion();
+});
+
+// Важное изменение: добавляем обработчик на изменение цены ткани, но не пересчитываем автоматически
+document.getElementById('input-textile-cost').addEventListener('input', () => {
+    document.getElementById('textile-cost').textContent = ''; // Сбрасываем предыдущую стоимость
 });
