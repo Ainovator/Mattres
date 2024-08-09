@@ -1,146 +1,114 @@
-let layerCount = 1;
+let details = [];
+let mattressList = [];
 
-document.getElementById('input-length').addEventListener('input', updateAllLayerWeights);
-document.getElementById('input-width').addEventListener('input', updateAllLayerWeights);
+function bestFit(width, parts) {
+    parts.sort((a, b) => b[1] - a[1]);
+    let currentHeight = 0;
+    const rows = [];
 
-function updateLayerWeight(layerId) {
-    const layerThickness = parseInt(document.getElementById(`layer-thickness-${layerId}`).value);
-    const mattressLength = parseInt(document.getElementById('input-length').value);
-    const mattressWidth = parseInt(document.getElementById('input-width').value);
-    const material = document.getElementById(`layer-material-${layerId}`).value;
-    const inputAmount = parseInt(document.getElementById('input-amount').value);
-    const inputCost = parseInt(document.getElementById('input-amount').value);
-
-    if (!isNaN(layerThickness) && !isNaN(mattressLength) && !isNaN(mattressWidth)) {
-        const weight = calculateCost(layerThickness, mattressLength, mattressWidth, material, inputAmount);
-        document.getElementById(`layer-weight-${layerId}`).value = weight.toFixed(2);
-    } else {
-        document.getElementById(`layer-weight-${layerId}`).value = '';
+    for (const [partWidth, partHeight] of parts) {
+        let placed = false;
+        for (const row of rows) {
+            if (row.width + partWidth <= width) {
+                row.details.push([row.width, currentHeight, partWidth, partHeight]);
+                row.width += partWidth;
+                row.height = Math.max(row.height, partHeight);
+                placed = true;
+                break;
+            }
+        }
+        if (!placed) {
+            rows.push({ width: partWidth, height: partHeight, details: [[0, currentHeight, partWidth, partHeight]] });
+            currentHeight += partHeight;
+        }
     }
-}
 
-function updateAllLayerWeights() {
-    for (let i = 1; i <= layerCount; i++) {
-        updateLayerWeight(i);
+    const totalHeight = currentHeight;
+    const detailPositions = [];
+    for (const row of rows) {
+        detailPositions.push(...row.details);
     }
+    return { totalHeight, detailPositions };
 }
 
-function calculateCost(layerThickness, mattressLength, mattressWidth, material,inputAmount) {
-    // Извлекаем первые две цифры из названия материала
-    const density = parseInt(material.substring(2, 4), 10);
-
-    // Рассчитываем вес
-    const weight = (layerThickness / 1000) * (mattressLength / 1000) * (mattressWidth / 1000) * inputAmount * density;
-    
-    return weight;
-}
-
-function addLayer() {
-    layerCount++;
-    const layerContainer = document.getElementById('layer-container');
-    const layerGroup = document.createElement('div');
-    layerGroup.className = 'layer-button';
-    layerGroup.id = `layer-group-${layerCount}`;
-
-    layerGroup.innerHTML = `
-        <div class="form-group-2">
-            <div class="field-group">
-                <label for="layer-material-${layerCount}">Материал слоя ${layerCount}:</label>
-                <select id="layer-material-${layerCount}" class="form-control">
-                    <option value="HR3030">HR3030</option>
-                    <option value="VE3508">VE3508</option>
-                    <option value="HR3020">HR3020</option>
-                    <option value="LR2545">LR2545</option>
-                    <option value="LR4065">LR4065</option>
-                </select>
-            </div>
-            <div class="field-group">
-                <label for="layer-thickness-${layerCount}">Толщина слоя ${layerCount}:</label>
-                <select id="layer-thickness-${layerCount}" class="form-control">
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                    <option value="150">150</option>
-                    <option value="200">200</option>
-                </select>
-            </div>
-            <div class="field-group">
-                <label for="layer-weight-${layerCount}">Цена за кг${layerCount} (кг):</label>
-                <input type="number" id="input-cost-${layerCount}" class="form-control">
-            </div>
-            
-        </div>
-        <button class="delete-btn" onclick="removeLayer(${layerCount})">×</button>
-    `;
-    
-    layerContainer.appendChild(layerGroup);
-
-    document.getElementById(`layer-thickness-${layerCount}`).addEventListener('change', () => updateLayerWeight(layerCount));
-    document.getElementById(`layer-material-${layerCount}`).addEventListener('change', () => updateLayerWeight(layerCount));
-}
-
-function removeLayer(layerId) {
-    const layerGroup = document.getElementById(`layer-group-${layerId}`);
-    layerGroup.remove();
-    updateAllLayerWeights();
-}
-
-document.getElementById('layer-thickness-1').addEventListener('change', () => updateLayerWeight(1));
-document.getElementById('layer-material-1').addEventListener('change', () => updateLayerWeight(1));
-
-function addMattress() {
+function getInputParams() {
     const inputCant = document.getElementById('input-cant').checked ? 'y' : 'n';
     const inputWidth = parseInt(document.getElementById('input-width').value);
     const inputLength = parseInt(document.getElementById('input-length').value);
     const inputBold = parseInt(document.getElementById('input-bold').value);
     const inputAmount = parseInt(document.getElementById('input-amount').value);
     const inputTextile = parseInt(document.getElementById('input-textile').value);
+    return { inputCant, inputWidth, inputLength, inputBold, inputAmount, inputTextile };
+}
 
-    if (inputLength < inputWidth) {
-        alert("Длина не может быть меньше ширины.");
+function checkCant(inputCant) {
+    if (inputCant === 'y' || inputCant === 'n') {
+        return inputCant === 'y' ? 50 : 20;
+    } else {
+        alert("Введено неверное значение канта");
+        return 0;
+    }
+}
+
+function countDetails(inputWidth, inputLength, inputBold, inputAmount, scaleUp, inputTextile) {
+    let details = [];
+    if (inputWidth < inputTextile) {
+        for (let i = 0; i < inputAmount * 2; i++) {
+            details.push([inputWidth + scaleUp, inputLength + scaleUp]);
+            details.push([inputWidth + scaleUp, inputBold + scaleUp]);
+            details.push([inputBold + scaleUp, inputLength + scaleUp]);
+        }
+    } else {
+        for (let i = 0; i < inputAmount * 2; i++) {
+            details.push([(inputWidth / 2) + scaleUp, inputLength + scaleUp]);
+            details.push([(inputWidth / 2) + scaleUp, inputLength + scaleUp]);
+            details.push([inputWidth + scaleUp, inputBold + scaleUp]);
+            details.push([inputBold + scaleUp, inputLength + scaleUp]);
+        }
+    }
+    return details;
+}
+
+function addMattress() {
+    const { inputCant, inputWidth, inputLength, inputBold, inputAmount, inputTextile } = getInputParams();
+    const scaleUp = checkCant(inputCant);
+    if (scaleUp === 0) {
         return;
     }
-
-    const totalLayerThickness = Array.from(document.querySelectorAll('.field-group select[id^="layer-thickness-"]'))
-        .reduce((sum, select) => sum + parseInt(select.value), 0);
-
-    if (totalLayerThickness > inputBold) {
-        alert("Суммарная толщина слоев не может быть больше толщины матраса.");
-        return;
-    }
-
-    const layers = [];
-    for (let i = 1; i <= layerCount; i++) {
-        const layerThickness = parseInt(document.getElementById(`layer-thickness-${i}`).value);
-        const layerMaterial = document.getElementById(`layer-material-${i}`).value;
-        const layerWeight = parseFloat(document.getElementById(`layer-weight-${i}`).value);
-        layers.push({ layerThickness, layerMaterial, layerWeight });
-    }
-
-    const mattress = {
+    const mattressDetails = countDetails(inputWidth, inputLength, inputBold, inputAmount, scaleUp, inputTextile);
+    
+    mattressList.push({
         inputCant,
         inputWidth,
         inputLength,
         inputBold,
         inputAmount,
         inputTextile,
-        layers
-    };
+        details: mattressDetails
+    });
 
-    addMattressToList(mattress);
+    updateMattressList();
+    checkFormCompletion();
 }
 
-function addMattressToList(mattress) {
-    const mattressList = document.getElementById('mattress-list');
-    const mattressItem = document.createElement('p');
-    mattressItem.innerHTML = `
-        Матрас: Ширина - ${mattress.inputWidth}, Длина - ${mattress.inputLength}, Толщина - ${mattress.inputBold}, Количество - ${mattress.inputAmount}
-        <button class="delete-btn" onclick="removeMattress(this)">×</button>
-    `;
-    mattressList.appendChild(mattressItem);
-}
-
-function removeMattress(button) {
-    button.parentElement.remove();
+function updateMattressList() {
+    const mattressListElement = document.getElementById('mattress-list');
+    mattressListElement.innerHTML = '';
+    mattressList.forEach((mattress, index) => {
+        const mattressElement = document.createElement('p');
+        mattressElement.textContent = `Матрас ${index + 1}: Ширина - ${mattress.inputWidth}, Длина - ${mattress.inputLength}, Толщина - ${mattress.inputBold}, Количество - ${mattress.inputAmount}, Кант - ${mattress.inputCant}, Ширина ткани - ${mattress.inputTextile}`;
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = '×';
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.onclick = () => {
+            mattressList.splice(index, 1);
+            updateMattressList();
+        };
+        
+        mattressElement.appendChild(deleteBtn);
+        mattressListElement.appendChild(mattressElement);
+    });
 }
 
 function calculate() {
@@ -197,5 +165,25 @@ function visualize() {
     });
 }
 
-// Пример вызова функции при изменении значений
-updateAllLayerWeights();
+function checkFormCompletion() {
+    const { inputWidth, inputLength, inputBold, inputAmount } = getInputParams();
+    const addButton = document.getElementById('add-button');
+    
+    if (inputWidth && inputLength && inputBold && inputAmount) {
+        addButton.disabled = false;
+    } else {
+        addButton.disabled = true;
+    }
+}
+
+document.getElementById('input-width').addEventListener('input', checkFormCompletion);
+document.getElementById('input-length').addEventListener('input', checkFormCompletion);
+document.getElementById('input-bold').addEventListener('input', (event) => {
+    document.getElementById('input-bold-output').value = event.target.value;
+    checkFormCompletion();
+});
+document.getElementById('input-amount').addEventListener('input', checkFormCompletion);
+document.getElementById('input-textile').addEventListener('input', (event) => {
+    document.getElementById('input-textile-output').value = event.target.value;
+    checkFormCompletion();
+});

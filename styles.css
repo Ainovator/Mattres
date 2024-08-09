@@ -5,14 +5,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
     background-color: #f4f5f7;
     color: #333;
 }
 
 .container {
-    width: 98%;
-    max-width: 800px;
+    width: 90%;
+    max-width: 600px;
     margin: auto;
     padding: 30px;
     background-color: white;
@@ -165,46 +165,6 @@ h2 {
 
 .delete-btn:hover {
     color: #cc0000;
-}
-
-.form-group-2 {
-    display: flex; 
-    justify-content: space-between;
-    align-items: center;
-    gap: 5px;  
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 1vw;
-}
-
-.field-group {
-    flex: 1; 
-    display: flex;
-    flex-direction: column; 
-   
-}
-
-.layer-container .layer-button {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-bottom: 10px;
-}
-
-.layer-container .layer-button:hover {
-    background-color: #0056b3;
-}
-
-.layer-container .layer-button .delete-btn {
-    color: white;
 }
 
 #visualization {

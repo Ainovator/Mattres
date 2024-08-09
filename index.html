@@ -21,11 +21,11 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="input-width">Введите ширину в миллиметрах:</label>
+                <label for="input-width">Введите ширину матраса:</label>
                 <input type="number" id="input-width" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="input-length">Введите длину в миллиметрах:</label>
+                <label for="input-length">Введите длину матраса:</label>
                 <input type="number" id="input-length" class="form-control" required>
             </div>
             <div class="form-group">
@@ -42,16 +42,6 @@
                 <input type="range" id="input-textile" class="form-control" min="1200" max="1600" step="100" value="1400">
                 <output id="input-textile-output">1400</output>
             </div>
-            <div class="form-group">
-                <label for="input-amount">Введите цену ткани:</label>
-                <input type="number" id="input-amount" class="form-control" required>
-            </div>
-            
-            <div class="layer-container" id="layer-container">
-                
-            </div>
-            
-            <button type="button" onclick="addLayer()" class="btn">Добавить слой</button>
             <button type="button" onclick="addMattress()" class="btn" id="add-button" disabled>Добавить</button>
         </form>
         <h2>Список матрасов</h2>
