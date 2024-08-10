@@ -15,6 +15,7 @@ let Bold_Second_Layer = parseInt(document.getElementById('bold-second-layer').va
 let Material_Third_Layer = parseInt(document.getElementById('material-third-layer').value) || 0;
 let Bold_Third_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
 let Input_Cant_Value = 0; 
+let Input_Bort_Value = 0; 
 let ScaleUp = 20;
 const Cost_Foam = {
     HR3030: 540,
@@ -24,24 +25,10 @@ const Cost_Foam = {
 };
 
 calculate()
-
 // Динамический парсинг при изменении значений в полях ввода
-document.getElementById('input-mattress-width').addEventListener('blur', () => {
+document.getElementById('input-mattress-width').addEventListener('input', () => {
     Input_Mattress_Width = parseInt(document.getElementById('input-mattress-width').value) || 0;
-
-    if (Input_Mattress_Width > Input_Mattress_Length && Input_Mattress_Length !== 0 && Input_Mattress_Width !== 0) {
-        // Меняем значения местами
-        const temp = Input_Mattress_Length;
-        Input_Mattress_Length = Input_Mattress_Width;
-        Input_Mattress_Width = temp;
-
-        // Обновляем значения в полях ввода
-        document.getElementById('input-mattress-width').value = Input_Mattress_Width;
-        document.getElementById('input-mattress-length').value = Input_Mattress_Length;
-
-        console.log('Значения ширины и длины были изменены местами.');
-    }
-
+    console.log('Width:', Input_Mattress_Width);
     calculate();
 });
 
@@ -50,25 +37,19 @@ document.getElementById('input-textile-cost').addEventListener('input', () => {
     calculate();
 });
 
-document.getElementById('input-mattress-length').addEventListener('blur', () => {
+document.getElementById('input-mattress-length').addEventListener('input', () => {
     Input_Mattress_Length = parseInt(document.getElementById('input-mattress-length').value) || 0;
 
-    if (Input_Mattress_Length < Input_Mattress_Width && Input_Mattress_Length !== 0 && Input_Mattress_Width !== 0) {
-        // Меняем значения местами
-        const temp = Input_Mattress_Width;
-        Input_Mattress_Width = Input_Mattress_Length;
-        Input_Mattress_Length = temp;
-
-        // Обновляем значения в полях ввода
-        document.getElementById('input-mattress-width').value = Input_Mattress_Width;
-        document.getElementById('input-mattress-length').value = Input_Mattress_Length;
-
-        console.log('Значения длины и ширины были изменены местами.');
+    if (Input_Mattress_Length < Input_Mattress_Width) {
+        alert('Длина матраса не может быть меньше ширины. Значение длины будет установлено равным ширине.');
+        Input_Mattress_Length = Input_Mattress_Width;
+        document.getElementById('input-mattress-length').value = Input_Mattress_Width;
     }
 
     console.log('Length:', Input_Mattress_Length);
     calculate();
 });
+
 
 function updateMattressBold() {
     // Считаем сумму толщин слоёв пены
@@ -81,6 +62,13 @@ function updateMattressBold() {
 
     calculate(); // Пересчитываем все значения
 }
+
+// document.getElementById('input-mattress-bold').addEventListener('input', function() {
+//     Input_Mattress_Bold = parseInt(this.value) || 0;
+
+//     document.getElementById('input-mattress-bold-output').textContent = Input_Mattress_Bold;
+//     calculate();
+// });
 
 document.getElementById('input-mattress-amount').addEventListener('input', () => {
     Input_Mattress_Amount = parseInt(document.getElementById('input-mattress-amount').value) || 0;
@@ -96,16 +84,55 @@ document.getElementById('input-textile-width').addEventListener('input', functio
 });
 
 document.getElementById('input-cant').addEventListener('change', function() {
+    const cantImage = document.getElementById('cant-image');
+    const bortSwitch = document.getElementById('input-bort');
+
     if (this.checked) {
+        // Если "Кант" включен, включаем и "Борт"
         Input_Cant_Value = 1; 
+        Input_Bort_Value = 1; 
         ScaleUp = 50;
+        cantImage.src = 'cant+bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" включены
+        bortSwitch.checked = true; // Обновляем состояние переключателя "Борт"
     } else {
-        Input_Cant_Value = 0; 
-        ScaleUp=20;
+        // Если "Кант" выключен, но "Борт" включен
+        Input_Cant_Value = 0;
+        ScaleUp = 20;
+        if (bortSwitch.checked) {
+            cantImage.src = 'only-bort.jpeg'; // Путь к картинке, когда только "Борт" включен
+        } else {
+            cantImage.src = 'cant-bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" выключены
+        }
     }
     calculate();
-
 });
+
+document.getElementById('input-bort').addEventListener('change', function() {
+    const cantSwitch = document.getElementById('input-cant');
+    const cantImage = document.getElementById('cant-image');
+
+    if (this.checked) {
+        // Если "Борт" включен, проверяем, нужен ли "Кант"
+        Input_Bort_Value = 1;
+        if (cantSwitch.checked) {
+            ScaleUp = 50;
+            cantImage.src = 'cant+bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" включены
+        } else {
+            ScaleUp = 20;
+            cantImage.src = 'only-bort.jpeg'; // Путь к картинке, когда только "Борт" включен
+        }
+    } else {
+        // Если "Борт" выключен, обязательно выключаем "Кант"
+        Input_Bort_Value = 0;
+        Input_Cant_Value = 0;
+        ScaleUp = 20;
+        cantSwitch.checked = false; // Обновляем состояние переключателя "Кант"
+        cantImage.src = 'cant-bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" выключены
+    }
+    calculate();
+});
+
+
 
 //Динамический парсинг выбора материала первого слоя
 document.getElementById('material-first-layer').addEventListener('input', () => {
@@ -174,10 +201,10 @@ function calculate() {
     console.log(Cost_Second_Layer, Full_Cost_Second_Layer)
     let Full_Cost_Third_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Third_Layer/1000)*(Material_Third_Layer)*Cost_Third_Layer;
     console.log(Cost_Third_Layer, Full_Cost_Third_Layer);
-    let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*Input_Mattress_Amount*1000)/1000;
+    let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*1000)/1000;
 
     //Расчёт стоимости ткани
-    let Full_Textile_Cost = Math.round((Input_Textile_Cost * (BF_Out.rollLength/1000))*1000)/1000;
+    let Full_Textile_Cost = Input_Textile_Cost * (BF_Out.rollLength/1000);
     let Full_Cost_Mattress = Full_Textile_Cost + Full_Cost_Foam;
 
 
@@ -190,6 +217,8 @@ function calculate() {
     document.getElementById('full-cost-mattress').textContent = `Цена изделия: ${Full_Cost_Mattress} ₽`; // Убедитесь, что этот элемент существует на странице
     console.log(Full_Cost_Foam);
 }
+
+
 
 //Раскладка деталей матраса исходя из размеров
 function countDetails() {
@@ -258,6 +287,9 @@ function bestFit(width, parts) {
     };
 }
 
+
+//Всякая декоративная вещь
+
 // Функция для копирования текста в буфер обмена
 function copyToClipboard(text) {
     const tempInput = document.createElement('input');
@@ -277,48 +309,6 @@ document.querySelectorAll('#results p').forEach(p => {
         copyToClipboard(this.textContent);
     });
 });
-
-
-function visualize() {
-    // Получаем ширину ткани и детали для визуализации
-    const textileWidth = Input_Textile_Width;
-    const { details } = bestFit(textileWidth, countDetails());
-
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-
-    // Рассчитываем высоту холста на основе общей длины рулона
-    const rollLength = details.reduce((max, d) => Math.max(max, d[1] + d[3]), 0);
-    canvas.width = textileWidth;
-    canvas.height = rollLength;
-
-    // Очищаем холст перед отрисовкой
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Рисуем координатную сетку
-    const gridSize = 10;
-    ctx.strokeStyle = '#ddd';
-    for (let x = 0; x <= canvas.width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-    }
-    for (let y = 0; y <= canvas.height; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-    }
-
-    // Рисуем детали
-    ctx.strokeStyle = '#007bff';
-    ctx.lineWidth = 2;
-    details.forEach(([x, y, width, height]) => {
-        ctx.strokeRect(x, y, width, height);
-        ctx.fillText(`${width}x${height}`, x + 5, y + 15);
-    });
-}
 
 
 

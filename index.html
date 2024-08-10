@@ -16,20 +16,34 @@
         <h1>Калькулятор матрасов</h1>
         <form id="calculator-form">
             <div class="form-group">
-                <label>Кант </label>
-                <div class="toggle-switch">
-                    <input type="checkbox" id="input-cant" class="toggle-switch-checkbox">
-                    <label for="input-cant" class="toggle-switch-label"></label>
+                <div class="switch-block">
+                     <div class="switch-container">
+                         <label>Кант</label>
+                         <div class="toggle-switch">
+                             <input type="checkbox" id="input-cant" class="toggle-switch-checkbox">
+                             <label for="input-cant" class="toggle-switch-label"></label>
+                         </div>
+                     </div>
+                     <div class="switch-container">
+                         <label>Борт</label>
+                         <div class="toggle-switch">
+                             <input type="checkbox" id="input-bort" class="toggle-switch-checkbox">
+                             <label for="input-bort" class="toggle-switch-label"></label>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+             <div id="cant-image-container" class="image-container">
+                <img id="cant-image" src="cant+bort.jpg" alt="Кант изображение" class="cant-image">
+             
+                <div class="form-group">
+                    <label for="input-width">Введите ширину матраса:</label>
+                    <input type="number" id="input-mattress-width" class="form-control" value="1000" required inputmode="numeric" pattern="[0-9]*">
                 </div>
-          
-            </div>
+                
             <div class="form-group">
-                <label for="input-width">Введите ширину в миллиметрах:</label>
-                <input type="number" id="input-mattress-width" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="input-length">Введите длину в миллиметрах:</label>
-                <input type="number" id="input-mattress-length" class="form-control" required>
+                <label for="input-length">Введите длину матраса:</label>
+                <input type="number" id="input-mattress-length" class="form-control" value = 1000 required inputmode="numeric" pattern="[0-9]>
             </div>
             
         
@@ -119,7 +133,7 @@
                         <option value="50">50</option>
                         <option value="100">100</option>
                         <option value="150">150</option>
-                        <option value="250">200</option>
+                        <option value="200">200</option>
                     </select>   
                 </div>
             </div>     
@@ -145,11 +159,11 @@
 
       
         
-        <div id="visualization">
-            <button type="button" onclick="visualize()" class="btn-vis">Визуализировать</button>
+        <!-- <div id="visualization">
+        <button type="button" onclick="visualize()" class="btn-vis" id="visualize-button" disabled>Визуализировать</button>
             <h2>Визуализация</h2>
             <canvas id="canvas"></canvas>
-        </div> 
+        </div> -->
     </div>
     <script src="script.js"></script>
 </body>

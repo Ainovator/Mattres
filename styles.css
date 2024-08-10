@@ -10,6 +10,18 @@ body {
     color: #333;
 }
 
+.image-container {
+    text-align: center; /* Центрируем изображение */
+    margin-top: 10px;
+    margin-bottom: 50px;
+}
+
+.cant-image {
+    width: 100%; /* Занимает всю ширину контейнера */
+    height: auto; /* Сохраняет пропорции */
+    margin-bottom: 25px;
+}
+
 
 #results p {
     background-color: #007bff; /* Цвет фона кнопки */
@@ -46,6 +58,10 @@ h1 {
     margin-bottom: 20px;
     color: #333;
 }
+.switch-block{
+    display: flex; 
+}
+
 .form-group-2 {
     /* display: flex;
     justify-content: ce;
@@ -115,6 +131,17 @@ h1 {
     border-color: #007bff;
     outline: none;
 }
+.switch-block {
+    display: flex;
+    justify-content: center; /* Центрируем переключатели по горизонтали */
+    align-items: center; /* Центрируем текст по вертикали */
+    gap: 50px; /* Отступ между переключателями */
+}
+
+
+.switch-container {
+    text-align: center; /* Центрируем текст и переключатели по центру */
+}
 
 .toggle-switch {
     position: relative;
@@ -125,6 +152,7 @@ h1 {
 
 .toggle-switch-checkbox {
     display: none;
+    margin-left: 20px;
 }
 
 .toggle-switch-label {
@@ -138,6 +166,7 @@ h1 {
     border-radius: 12px;
     background-color: #ddd;
     transition: background-color 0.3s ease-in;
+    
 }
 
 .toggle-switch-label:before {
