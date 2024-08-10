@@ -359,12 +359,23 @@ function visualize() {
         ctx.stroke();
     }
 
-    // Массив цветов для деталей
+    // Массив для цветов и объект для хранения цветов одинаковых размеров
     const colors = ['#FF6347', '#4682B4', '#32CD32', '#FFD700', '#FF69B4', '#8A2BE2', '#FF4500', '#DAA520'];
+    const sizeToColorMap = {};
+    let colorIndex = 0;
 
     // Рисуем детали
-    detailPositions.forEach(([x, y, width, height], index) => {
-        ctx.fillStyle = colors[index % colors.length]; // Выбираем цвет из массива
+    detailPositions.forEach(([x, y, width, height]) => {
+        const sizeKey = `${width}x${height}`; // Создаем уникальный ключ на основе размера
+
+        if (!sizeToColorMap[sizeKey]) {
+            // Если для такого размера еще не было цвета, назначаем новый
+            sizeToColorMap[sizeKey] = colors[colorIndex % colors.length];
+            colorIndex++;
+        }
+
+        const color = sizeToColorMap[sizeKey];
+        ctx.fillStyle = color;
         ctx.fillRect(x, y, width, height);
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 1;
@@ -402,7 +413,10 @@ function visualize() {
         }
 
         detailPositions.forEach(([x, y, width, height], index) => {
-            ctx.fillStyle = colors[index % colors.length];
+            const sizeKey = `${width}x${height}`;
+            const color = sizeToColorMap[sizeKey];
+
+            ctx.fillStyle = color;
             ctx.fillRect(x, y, width, height);
             ctx.strokeStyle = '#000';
             ctx.lineWidth = 1;
@@ -432,9 +446,22 @@ function visualize() {
         ctx.setTransform(scale, 0, 0, scale, 0, 0);
         visualize(); // Перерисовываем холст с новым масштабом
     });
+}
+
+    // Масштабирование холста с помощью колесика мыши
+    let scale = 1;
+    canvas.addEventListener('wheel', function (e) {
+        e.preventDefault();
+        const scaleAmount = 0.1;
+        scale += e.deltaY < 0 ? scaleAmount : -scaleAmount;
+        scale = Math.min(Math.max(0.5, scale), 2); // Ограничение масштаба от 0.5 до 2
+
+        ctx.setTransform(scale, 0, 0, scale, 0, 0);
+        visualize(); // Перерисовываем холст с новым масштабом
+    });
 
     
-}
+
 
 // Активируем кнопку "Визуализировать", если все расчеты выполнены
 document.getElementById('visualize-button').disabled = false;
