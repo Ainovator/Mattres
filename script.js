@@ -185,7 +185,7 @@ function calculate() {
     let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*1000)/1000;
 
     //Расчёт стоимости ткани
-    let Full_Textile_Cost = Input_Textile_Cost * (BF_Out.rollLength/1000);
+    let Full_Textile_Cost = Math.round((Input_Textile_Cost * (BF_Out.rollLength/1000))*1000)/1000;
     let Full_Cost_Mattress = Full_Textile_Cost + Full_Cost_Foam;
 
 
