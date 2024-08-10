@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Калькулятор ткани для матраса</h1>
+        <h1>Калькулятор матрасов</h1>
         <form id="calculator-form">
             <div class="form-group">
                 <label>Кант</label>
@@ -25,48 +25,131 @@
             </div>
             <div class="form-group">
                 <label for="input-width">Введите ширину матраса:</label>
-                <input type="number" id="input-width" class="form-control" required>
+                <input type="number" id="input-mattress-width" class="form-control" value = 1000 required>
             </div>
             <div class="form-group">
                 <label for="input-length">Введите длину матраса:</label>
-                <input type="number" id="input-length" class="form-control" required>
+                <input type="number" id="input-mattress-length" class="form-control" value = 1000 required>
             </div>
+            
+        
             <div class="form-group">
-                <label for="input-bold">Введите толщину матраса:</label>
-                <input type="range" id="input-bold" class="form-control" min="50" max="500" step="50" value="50">
-                <output id="input-bold-output">50</output>
+                <label for="input-amount">Введите количество матрасов:</label>
+                <input type="number" id="input-mattress-amount" class="form-control" value=1 required>
             </div>
-            <div class="form-group">
-                <label for="input-amount">Введите количество изделий:</label>
-                <input type="number" id="input-amount" class="form-control" required>
-            </div>
+            
+            <!-- <button type="button" onclick="addMattress()" class="btn-add" id="add-button" disabled>Добавить</button> -->
+            <!-- <h2>Список матрасов</h2>
+            <div id="mattress-list"></div> -->
+
+
             <div class="form-group">
                 <label for="input-textile">Выберите ширину ткани (1200 - 1600):</label>
-                <input type="range" id="input-textile" class="form-control" min="1200" max="1600" step="100" value="1400">
-                <output id="input-textile-output">1400</output>
+                <input type="range" id="input-textile-width" class="form-control" min="1200" max="1600" step="100" value="1400">
+                <output id="input-textile-width-output">1400</output>
             </div>
             <div class="form-group">
                 <label for="input-amount">Введите цену ткани:</label>
                 <input type="number" id="input-textile-cost" class="form-control" required>
             </div>
-            <button type="button" onclick="addMattress()" class="btn" id="add-button" disabled>Добавить</button>
+
+            <h2>Слои пены</h2>
+            <!-- Первый слой пены -->
+            <div class="form-group-2">
+                <div class = "label-select">
+                    <label for="material-select">Материал:</label>
+                    <select id="material-first-layer" class="form-control-2" name="material">
+                        <option value = 0 selected>Выбрать</option>
+                        <option value="30">HR3030</option>
+                        <option value="30">HR3020</option>
+                        <option value="35">VE3508</option>
+                        <option value="23">NP2300</option>
+                    </select>
+                </div>
+                <div class = "label-select">
+                    <label for="material-select">Толщина:</label>
+                    <select id="bold-first-layer" class="form-control-2" name="material">
+                        <option value="0" selected>0</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="150">150</option>
+                        <option value="200">200</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Второй слой пены -->
+            <div class="form-group-2">
+                <div class = "label-select">
+                    <label for="material-select">Материал:</label>
+                    <select id="material-second-layer" class="form-control-2" name="material">
+                        <option value = 0 selected>Выбрать</option>
+                        <option value="30">HR3030</option>
+                        <option value="30">HR3020</option>
+                        <option value="35">VE3508</option>
+                        <option value="23">NP2300</option>
+                    </select>
+                </div>
+                <div class = "label-select">
+                    <label for="material-select">Толщина:</label>
+                    <select id="bold-second-layer" class="form-control-2" name="material">
+                        <option value="0" selected>0</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="150">150</option>
+                        <option value="200">200</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Третий слой пены -->
+            <div class="form-group-2">
+                <div class = "label-select">
+                    <label for="material-select">Материал:</label>
+                    <select id="material-third-layer" class="form-control-2" name="material">
+                        <option value = 0 selected>Выбрать</option>
+                        <option value="30">HR3030</option>
+                        <option value="30">HR3020</option>
+                        <option value="35">VE3508</option>
+                        <option value="23">NP2300</option>
+                    </select>
+                </div>
+                <div class = "label-select">
+                    <label for="material-select">Толщина:</label>
+                    <select id="bold-third-layer" class="form-control-2" name="material">
+                        <option value="0" selected>0</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="150">150</option>
+                        <option value="250">200</option>
+                    </select>   
+                </div>
+            </div>     
         </form>
-        <h2>Список матрасов</h2>
-        <div id="mattress-list"></div>
-        <button type="button" onclick="calculate()" class="btn">Рассчитать</button>
-        <button type="button" onclick="visualize()" class="btn" id="visualize-button" disabled>Визуализировать</button>
+     
+        <!-- <button type="button" onclick="calculate() " class="btn-value">Рассчитать</button> -->
+        <div class="form-group">
+            <label for="input-bold" style="margin-top: 20px; display: block;">Толщина матраса:</label>
+            <input type="range" id="input-mattress-bold" class="form-control" min="0" max="500" step="50" value="0">
+            <output id="input-mattress-bold-output">0</output>
+        </div>
         <h2>Результаты</h2>
         <div id="results">
-            <p id="total-height"></p>
-            <p id="textile-cost"></p>
-            <p id="details-list"></p>
-            <p id="total-details"></p>
-            
+            <p id="textile-length"></p>
+            <p id="full-textile-cost"></p>
+
+            <!-- <p id="details-list"></p> -->
+            <p id="cost-foam"></p>
+            <p id="mattress-volume" ></p>
+            <p id="full-cost-mattress" style = "margin-bottom: 50px;"></p>
+
         </div>
-        <div id="visualization">
+
+      
+        
+        <!-- <div id="visualization">
+        <button type="button" onclick="visualize()" class="btn-vis" id="visualize-button" disabled>Визуализировать</button>
             <h2>Визуализация</h2>
             <canvas id="canvas"></canvas>
-        </div>
+        </div> -->
     </div>
     <script src="script.js"></script>
 </body>

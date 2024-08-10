@@ -1,209 +1,272 @@
-let details = [];
-let mattressList = [];
+//Стартовый парсинг и объявление глобальных переменных
+let Input_Mattress_Width = parseInt(document.getElementById('input-mattress-width').value) || 0;
+let Input_Mattress_Length = parseInt(document.getElementById('input-mattress-length').value) || 0;
+let Input_Mattress_Bold = parseInt(document.getElementById('input-mattress-bold').value) || 0;
+let Input_Mattress_Amount = parseInt(document.getElementById('input-mattress-amount').value) || 0;
+let Input_Textile_Width = parseInt(document.getElementById('input-textile-width').value) || 0;
+let Input_Textile_Cost = parseInt(document.getElementById('input-textile-cost').value) || 0;
+let Material_First_Layer = parseInt(document.getElementById('material-first-layer').value) || 0;
+let Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
+let Material_Second_Layer = parseInt(document.getElementById('material-second-layer').value) || 0;
+let Cost_First_Layer = 0;
+let Cost_Second_Layer = 0;
+let Cost_Third_Layer = 0;
+let Bold_Second_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
+let Material_Third_Layer = parseInt(document.getElementById('material-third-layer').value) || 0;
+let Bold_Third_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
+let Input_Cant_Value = 0; 
+let ScaleUp = 20;
+const Cost_Foam = {
+    HR3030: 540,
+    HR3020: 560,
+    VE3508: 535,
+    NP2300: 318,
+};
 
+calculate()
+// Динамический парсинг при изменении значений в полях ввода
+document.getElementById('input-mattress-width').addEventListener('input', () => {
+    Input_Mattress_Width = parseInt(document.getElementById('input-mattress-width').value) || 0;
+    console.log('Width:', Input_Mattress_Width);
+    calculate();
+});
+
+document.getElementById('input-textile-cost').addEventListener('input', () => {
+    Input_Textile_Cost = parseInt(document.getElementById('input-textile-cost').value) || 0;
+    calculate();
+});
+
+document.getElementById('input-mattress-length').addEventListener('input', () => {
+    Input_Mattress_Length = parseInt(document.getElementById('input-mattress-length').value) || 0;
+    console.log('Length:', Input_Mattress_Length);
+    calculate();
+});
+
+
+function updateMattressBold() {
+    // Считаем сумму толщин слоёв пены
+    let totalBold = Bold_First_Layer + Bold_Second_Layer + Bold_Third_Layer;
+
+    // Устанавливаем значение ползунка и текстового вывода
+    Input_Mattress_Bold = totalBold;
+    document.getElementById('input-mattress-bold').value = Input_Mattress_Bold;
+    document.getElementById('input-mattress-bold-output').textContent = Input_Mattress_Bold;
+
+    calculate(); // Пересчитываем все значения
+}
+
+// document.getElementById('input-mattress-bold').addEventListener('input', function() {
+//     Input_Mattress_Bold = parseInt(this.value) || 0;
+
+//     document.getElementById('input-mattress-bold-output').textContent = Input_Mattress_Bold;
+//     calculate();
+// });
+
+document.getElementById('input-mattress-amount').addEventListener('input', () => {
+    Input_Mattress_Amount = parseInt(document.getElementById('input-mattress-amount').value) || 0;
+    console.log('Amount:', Input_Mattress_Amount);
+    calculate();
+});
+
+document.getElementById('input-textile-width').addEventListener('input', function() {
+    Input_Textile_Width = parseInt(this.value) || 0;
+
+    document.getElementById('input-textile-width-output').textContent = Input_Textile_Width;
+    calculate();
+});
+
+document.getElementById('input-cant').addEventListener('change', function() {
+    if (this.checked) {
+        Input_Cant_Value = 1; 
+        ScaleUp = 50;
+    } else {
+        Input_Cant_Value = 0; 
+        ScaleUp=20;
+    }
+    calculate();
+
+});
+
+//Динамический парсинг выбора материала первого слоя
+document.getElementById('material-first-layer').addEventListener('input', () => {
+    Material_First_Layer = parseInt(document.getElementById('material-first-layer').value) || 0;
+    console.log('Density:', Material_First_Layer);
+
+    const SelectedFirstMaterialText = document.querySelector('#material-first-layer option:checked').textContent.trim();
+    Cost_First_Layer = Cost_Foam[SelectedFirstMaterialText] || 0;
+    calculate();
+});
+
+//Динамический парсинг выбора толщины первого слоя
+document.getElementById('bold-first-layer').addEventListener('input', () => {
+    Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
+    calculate();
+    updateMattressBold()
+});
+
+//Динамический парсинг выбора материала второго стлоя
+document.getElementById('material-second-layer').addEventListener('input', () => {
+    Material_Second_Layer = parseInt(document.getElementById('material-second-layer').value) || 0;
+    console.log('Density:', Material_Second_Layer);
+    const SelectedSecondMaterialText = document.querySelector('#material-second-layer option:checked').textContent.trim();
+    Cost_Second_Layer = Cost_Foam[SelectedSecondMaterialText] || 0;
+    calculate();
+});
+//Динамический парсинг толщины второго слоя
+document.getElementById('bold-second-layer').addEventListener('input', () => {
+    Bold_Second_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
+    calculate();
+    updateMattressBold()
+});
+
+//Динамический парсинг выбора материала третьего стлоя
+document.getElementById('material-third-layer').addEventListener('input', () => {
+    Material_Third_Layer = parseInt(document.getElementById('material-third-layer').value) || 0;
+    const SelectedThirdMaterialText = document.querySelector('#material-third-layer option:checked').textContent.trim();
+    Cost_Third_Layer = Cost_Foam[SelectedThirdMaterialText] || 0
+    calculate();
+});
+//Динамический парсинг толщины третьего слоя
+document.getElementById('bold-third-layer').addEventListener('input', () => {
+    Bold_Third_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
+    calculate();
+    updateMattressBold()
+});
+// Динамический парсинг при изменении значений в полях ввода
+
+
+
+
+// Функция расчета всех значений и вывод на фронт
+function calculate() {
+    console.log('Calculating with:', Input_Mattress_Width, Input_Mattress_Length, Input_Mattress_Bold, Input_Mattress_Amount);
+
+    // Считаем объем матраса
+    let Mattress_Volume = Math.round(((Input_Mattress_Width / 1000) * (Input_Mattress_Length / 1000) * (Input_Mattress_Bold / 1000) * Input_Mattress_Amount) * 1000) / 1000;
+    let details = countDetails();
+    let BF_Out = bestFit(Input_Textile_Width, details);
+
+    // Рассчитываем стоимость слоев
+    
+    let Full_Cost_First_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_First_Layer/1000)*(Material_First_Layer)*Cost_First_Layer;
+    console.log(Cost_First_Layer, Full_Cost_First_Layer);
+    let Full_Cost_Second_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Second_Layer/1000)*(Material_Second_Layer)*Cost_Second_Layer;
+    console.log(Cost_Second_Layer, Full_Cost_Second_Layer)
+    let Full_Cost_Third_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Third_Layer/1000)*(Material_Third_Layer)*Cost_Third_Layer;
+    console.log(Cost_Third_Layer, Full_Cost_Third_Layer);
+    let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*1000)/1000;
+
+    //Расчёт стоимости ткани
+    let Full_Textile_Cost = Input_Textile_Cost * (BF_Out.rollLength/1000);
+    let Full_Cost_Mattress = Full_Textile_Cost + Full_Cost_Foam;
+
+
+    // Выводим результат на фронт
+    document.getElementById('mattress-volume').textContent = `Объём матраса: ${Mattress_Volume} м³`;
+    document.getElementById('textile-length').textContent = `Длина рулона: ${BF_Out.rollLength} мм`;
+    // document.getElementById('details-list').textContent = `Детали: ${details.map(d => d.join(' x ')).join(', ')}`;
+    document.getElementById('cost-foam').textContent = `Цена пены: ${Full_Cost_Foam} ₽`; // Убедитесь, что этот элемент существует на странице
+    document.getElementById('full-textile-cost').textContent = `Цена рулона: ${Full_Textile_Cost} ₽`; // Убедитесь, что этот элемент существует на странице
+    document.getElementById('full-cost-mattress').textContent = `Цена изделия: ${Full_Cost_Mattress} ₽`; // Убедитесь, что этот элемент существует на странице
+    console.log(Full_Cost_Foam);
+}
+
+
+
+//Раскладка деталей матраса исходя из размеров
+function countDetails() {
+    let details = [];
+    
+    if (Input_Mattress_Width < Input_Textile_Width) {
+        for (let i = 0; i < Input_Mattress_Amount * 2; i++) {
+            details.push([Input_Mattress_Width + ScaleUp, Input_Mattress_Length + ScaleUp]);
+            details.push([Input_Mattress_Width + ScaleUp, Input_Mattress_Bold + ScaleUp]);
+            details.push([Input_Mattress_Bold + ScaleUp, Input_Mattress_Length + ScaleUp]);
+        }
+    } else {
+        for (let i = 0; i < Input_Mattress_Amount * 2; i++) {
+            details.push([(Input_Mattress_Width / 2) + ScaleUp, Input_Mattress_Length + ScaleUp]);
+            details.push([(Input_Mattress_Width / 2) + ScaleUp, Input_Mattress_Length + ScaleUp]);
+            details.push([Input_Mattress_Width + ScaleUp, Input_Mattress_Bold + ScaleUp]);
+            details.push([Input_Mattress_Bold + ScaleUp, Input_Mattress_Length + ScaleUp]);
+        }
+    }
+    
+    return details;
+}
+
+//Раскладка деталей на рулоне
 function bestFit(width, parts) {
+    // Сортируем детали по высоте (в порядке убывания)
     parts.sort((a, b) => b[1] - a[1]);
-    let currentHeight = 0;
-    const rows = [];
+    
+    let currentHeight = 0; // Текущая высота рулона
+    const rows = [];        // Массив для хранения рядов с деталями
+    const details = [];     // Массив для хранения всех деталей с координатами
 
     for (const [partWidth, partHeight] of parts) {
         let placed = false;
+        
+        // Попытка разместить деталь в существующих рядах
         for (const row of rows) {
             if (row.width + partWidth <= width) {
-                row.details.push([row.width, currentHeight, partWidth, partHeight]);
+                // Добавляем деталь в ряд
+                const x = row.width;
+                const y = row.y;
+                details.push([x, y, partWidth, partHeight]);
+                
                 row.width += partWidth;
                 row.height = Math.max(row.height, partHeight);
                 placed = true;
                 break;
             }
         }
+        
+        // Если деталь не удалось разместить в существующих рядах, создаём новый ряд
         if (!placed) {
-            rows.push({ width: partWidth, height: partHeight, details: [[0, currentHeight, partWidth, partHeight]] });
+            const x = 0;
+            const y = currentHeight;
+            details.push([x, y, partWidth, partHeight]);
+
+            rows.push({ width: partWidth, height: partHeight, y: currentHeight });
             currentHeight += partHeight;
         }
     }
 
-    const totalHeight = currentHeight;
-    const detailPositions = [];
-    for (const row of rows) {
-        detailPositions.push(...row.details);
-    }
-    return { totalHeight, detailPositions };
+    // Возвращаем список деталей и общую длину рулона
+    return {
+        details: details,
+        rollLength: currentHeight
+    };
 }
 
-function getInputParams() {
-    const inputCant = document.getElementById('input-cant').checked ? 'y' : 'n';
-    const inputWidth = parseInt(document.getElementById('input-width').value);
-    const inputLength = parseInt(document.getElementById('input-length').value);
-    const inputBold = parseInt(document.getElementById('input-bold').value);
-    const inputAmount = parseInt(document.getElementById('input-amount').value);
-    const inputTextile = parseInt(document.getElementById('input-textile').value);
-    const inputTextileCost = parseInt(document.getElementById('input-textile-cost').value);
-    return { inputCant, inputWidth, inputLength, inputBold, inputAmount, inputTextile, inputTextileCost};
+
+//Всякая декоративная вещь
+
+// Функция для копирования текста в буфер обмена
+function copyToClipboard(text) {
+    const tempInput = document.createElement('input');
+    tempInput.style.position = 'absolute';
+    tempInput.style.left = '-9999px';
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    alert(`Скопировано в буфер обмена: ${text}`);
 }
 
-function checkCant(inputCant) {
-    if (inputCant === 'y' || inputCant === 'n') {
-        return inputCant === 'y' ? 50 : 20;
-    } else {
-        alert("Введено неверное значение канта");
-        return 0;
-    }
-}
-
-function calculateTextileCost(inputTextileCost, totalHeight){
-    const totalTextileCost = inputTextileCost * (totalHeight / 1000);
-    return totalTextileCost;
-}
-
-function countDetails(inputWidth, inputLength, inputBold, inputAmount, scaleUp, inputTextile) {
-    let details = [];
-    if (inputWidth < inputTextile) {
-        for (let i = 0; i < inputAmount * 2; i++) {
-            details.push([inputWidth + scaleUp, inputLength + scaleUp]);
-            details.push([inputWidth + scaleUp, inputBold + scaleUp]);
-            details.push([inputBold + scaleUp, inputLength + scaleUp]);
-        }
-    } else {
-        for (let i = 0; i < inputAmount * 2; i++) {
-            details.push([(inputWidth / 2) + scaleUp, inputLength + scaleUp]);
-            details.push([(inputWidth / 2) + scaleUp, inputLength + scaleUp]);
-            details.push([inputWidth + scaleUp, inputBold + scaleUp]);
-            details.push([inputBold + scaleUp, inputLength + scaleUp]);
-        }
-    }
-    return details;
-}
-
-function addMattress() {
-    const { inputCant, inputWidth, inputLength, inputBold, inputAmount, inputTextile, inputTextileCost } = getInputParams();
-    const scaleUp = checkCant(inputCant);
-    if (scaleUp === 0) {
-        return;
-    }
-    const mattressDetails = countDetails(inputWidth, inputLength, inputBold, inputAmount, scaleUp, inputTextile);
-    
-    mattressList.push({
-        inputCant,
-        inputWidth,
-        inputLength,
-        inputBold,
-        inputAmount,
-        inputTextile,
-        inputTextileCost,
-        details: mattressDetails
+// Добавление обработчика событий для каждого <p> внутри #results
+document.querySelectorAll('#results p').forEach(p => {
+    p.addEventListener('click', function() {
+        copyToClipboard(this.textContent);
     });
-
-    updateMattressList();
-    checkFormCompletion();
-}
-
-function updateMattressList() {
-    const mattressListElement = document.getElementById('mattress-list');
-    mattressListElement.innerHTML = '';
-    mattressList.forEach((mattress, index) => {
-        const mattressElement = document.createElement('p');
-        mattressElement.textContent = `Матрас ${index + 1}: Ширина - ${mattress.inputWidth}, Длина - ${mattress.inputLength}, Толщина - ${mattress.inputBold}, Количество - ${mattress.inputAmount}, Кант - ${mattress.inputCant}, Ширина ткани - ${mattress.inputTextile}`;
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = '×';
-        deleteBtn.className = 'delete-btn';
-        deleteBtn.onclick = () => {
-            mattressList.splice(index, 1);
-            updateMattressList();
-        };
-        
-        mattressElement.appendChild(deleteBtn);
-        mattressListElement.appendChild(mattressElement);
-    });
-}
-
-function calculate() {
-    details = [];
-    
-    mattressList.forEach(mattress => {
-        details.push(...mattress.details);
-    });
-
-    const inputTextile = mattressList.length > 0 ? mattressList[0].inputTextile : 0;
-    const totalHeight = bestFit(inputTextile, details).totalHeight;
-
-    // Взяли новую стоимость из поля ввода
-    const inputTextileCost = parseInt(document.getElementById('input-textile-cost').value);
-
-    const totalTextileCost = calculateTextileCost(inputTextileCost, totalHeight);
-    document.getElementById('total-height').textContent = `Необходимая длина рулона: ${totalHeight}`;
-    
-    const detailsFormatted = details.map(d => `${d[0]}*${d[1]}`).join(', ');
-    document.getElementById('details-list').textContent = `Детали: ${detailsFormatted}`;
-    
-    document.getElementById('total-details').textContent = `Общее количество деталей: ${details.length}`;
-
-    document.getElementById('textile-cost').textContent = `Цена за рулон: ${totalTextileCost} руб.`;
-
-    document.getElementById('visualize-button').disabled = false;
-}
-
-function visualize() {
-    const inputTextile = mattressList.length > 0 ? mattressList[0].inputTextile : 0;
-    const { detailPositions } = bestFit(inputTextile, details);
-
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = inputTextile;
-    canvas.height = detailPositions.reduce((max, pos) => Math.max(max, pos[1] + pos[3]), 0);
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const gridSize = 10;
-
-    // Рисуем координатную сетку
-    ctx.strokeStyle = '#ddd';
-    for (let x = 0; x <= canvas.width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-    }
-    for (let y = 0; y <= canvas.height; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-    }
-
-    // Рисуем детали
-    ctx.strokeStyle = '#007bff';
-    ctx.lineWidth = 2;
-    detailPositions.forEach(([x, y, width, height]) => {
-        ctx.strokeRect(x, y, width, height);
-        ctx.fillText(`${width}x${height}`, x + 5, y + 15);
-    });
-}
-
-function checkFormCompletion() {
-    const { inputWidth, inputLength, inputBold, inputAmount } = getInputParams();
-    const addButton = document.getElementById('add-button');
-    
-    if (inputWidth && inputLength && inputBold && inputAmount) {
-        addButton.disabled = false;
-    } else {
-        addButton.disabled = true;
-    }
-}
-
-document.getElementById('input-width').addEventListener('input', checkFormCompletion);
-document.getElementById('input-length').addEventListener('input', checkFormCompletion);
-document.getElementById('input-bold').addEventListener('input', (event) => {
-    document.getElementById('input-bold-output').value = event.target.value;
-    checkFormCompletion();
-});
-document.getElementById('input-amount').addEventListener('input', checkFormCompletion);
-document.getElementById('input-textile').addEventListener('input', (event) => {
-    document.getElementById('input-textile-output').value = event.target.value;
-    checkFormCompletion();
 });
 
-// Важное изменение: добавляем обработчик на изменение цены ткани, но не пересчитываем автоматически
-document.getElementById('input-textile-cost').addEventListener('input', () => {
-    document.getElementById('textile-cost').textContent = ''; // Сбрасываем предыдущую стоимость
-});
+
+
+
+
+
+
+

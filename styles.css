@@ -10,6 +10,26 @@ body {
     color: #333;
 }
 
+
+#results p {
+    background-color: #007bff; /* Цвет фона кнопки */
+    color: white;              /* Цвет текста */
+    padding: 10px 20px;        /* Внутренние отступы */
+    border-radius: 5px;        /* Скругление углов */
+    display: block;            /* Блочный элемент, чтобы кнопки располагались одна под другой */
+    width: calc(100% - 40px);  /* Занимает всю ширину контейнера с учётом padding */
+    margin-bottom: 10px;       /* Отступ снизу между кнопками */
+    text-align: center;        /* Центрируем текст */
+    cursor: pointer;           /* Указатель при наведении */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
+    transition: background-color 0.3s ease;  /* Плавный переход цвета */
+}
+
+/* Эффект при наведении на кнопку */
+#results p:hover {
+    background-color: #0056b3; /* Изменение цвета при наведении */
+}
+
 .container {
     width: 90%;
     max-width: 600px;
@@ -26,11 +46,49 @@ h1 {
     margin-bottom: 20px;
     color: #333;
 }
+.form-group-2 {
+    /* display: flex;
+    justify-content: ce;
+    align-items: flex-start;
+ */
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 10px;
+ margin-bottom: 10px;
+
+}
+.label-select {
+    display: grid;
+
+
+
+}
+
+.form-column {
+    flex: 1;
+    margin-right: 10px; /* Отступ между колонками */
+}
+
+.form-column:last-child {
+    margin-right: 0; /* Убираем отступ у последней колонки */
+}
+
+.form-control-2 {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+
 
 .form-group {
     margin-bottom: 20px;
     text-align: left;
 }
+
 
 .form-group label {
     display: block;
@@ -50,6 +108,10 @@ h1 {
 }
 
 .form-control:focus {
+    border-color: #007bff;
+    outline: none;
+}
+.form-control-2:focus {
     border-color: #007bff;
     outline: none;
 }
@@ -107,14 +169,60 @@ h1 {
     cursor: pointer;
     transition: background-color 0.3s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    margin-bottom: 100px;
 }
+
+.btn-add {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.btn-vis {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.btn-value {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 
 .btn:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
 }
+.btn-add:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
 
 .btn:hover:enabled {
+    background-color: #0056b3;
+}
+.btn-add:hover:enabled {
     background-color: #0056b3;
 }
 
