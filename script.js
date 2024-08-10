@@ -24,6 +24,7 @@ const Cost_Foam = {
 };
 
 calculate()
+
 // Динамический парсинг при изменении значений в полях ввода
 document.getElementById('input-mattress-width').addEventListener('blur', () => {
     Input_Mattress_Width = parseInt(document.getElementById('input-mattress-width').value) || 0;
@@ -69,8 +70,6 @@ document.getElementById('input-mattress-length').addEventListener('blur', () => 
     calculate();
 });
 
-
-
 function updateMattressBold() {
     // Считаем сумму толщин слоёв пены
     let totalBold = Bold_First_Layer + Bold_Second_Layer + Bold_Third_Layer;
@@ -82,13 +81,6 @@ function updateMattressBold() {
 
     calculate(); // Пересчитываем все значения
 }
-
-// document.getElementById('input-mattress-bold').addEventListener('input', function() {
-//     Input_Mattress_Bold = parseInt(this.value) || 0;
-
-//     document.getElementById('input-mattress-bold-output').textContent = Input_Mattress_Bold;
-//     calculate();
-// });
 
 document.getElementById('input-mattress-amount').addEventListener('input', () => {
     Input_Mattress_Amount = parseInt(document.getElementById('input-mattress-amount').value) || 0;
@@ -199,8 +191,6 @@ function calculate() {
     console.log(Full_Cost_Foam);
 }
 
-
-
 //Раскладка деталей матраса исходя из размеров
 function countDetails() {
     let details = [];
@@ -268,9 +258,6 @@ function bestFit(width, parts) {
     };
 }
 
-
-//Всякая декоративная вещь
-
 // Функция для копирования текста в буфер обмена
 function copyToClipboard(text) {
     const tempInput = document.createElement('input');
@@ -290,6 +277,48 @@ document.querySelectorAll('#results p').forEach(p => {
         copyToClipboard(this.textContent);
     });
 });
+
+
+function visualize() {
+    // Получаем ширину ткани и детали для визуализации
+    const textileWidth = Input_Textile_Width;
+    const { details } = bestFit(textileWidth, countDetails());
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Рассчитываем высоту холста на основе общей длины рулона
+    const rollLength = details.reduce((max, d) => Math.max(max, d[1] + d[3]), 0);
+    canvas.width = textileWidth;
+    canvas.height = rollLength;
+
+    // Очищаем холст перед отрисовкой
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Рисуем координатную сетку
+    const gridSize = 10;
+    ctx.strokeStyle = '#ddd';
+    for (let x = 0; x <= canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+    }
+    for (let y = 0; y <= canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+    }
+
+    // Рисуем детали
+    ctx.strokeStyle = '#007bff';
+    ctx.lineWidth = 2;
+    details.forEach(([x, y, width, height]) => {
+        ctx.strokeRect(x, y, width, height);
+        ctx.fillText(`${width}x${height}`, x + 5, y + 15);
+    });
+}
 
 
 
