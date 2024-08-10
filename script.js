@@ -28,7 +28,6 @@ calculate()
 // Динамический парсинг при изменении значений в полях ввода
 document.getElementById('input-mattress-width').addEventListener('input', () => {
     Input_Mattress_Width = parseInt(document.getElementById('input-mattress-width').value) || 0;
-    console.log('Width:', Input_Mattress_Width);
     calculate();
 });
 
@@ -46,7 +45,6 @@ document.getElementById('input-mattress-length').addEventListener('input', () =>
         document.getElementById('input-mattress-length').value = Input_Mattress_Width;
     }
 
-    console.log('Length:', Input_Mattress_Length);
     calculate();
 });
 
@@ -72,7 +70,6 @@ function updateMattressBold() {
 
 document.getElementById('input-mattress-amount').addEventListener('input', () => {
     Input_Mattress_Amount = parseInt(document.getElementById('input-mattress-amount').value) || 0;
-    console.log('Amount:', Input_Mattress_Amount);
     calculate();
 });
 
@@ -137,7 +134,6 @@ document.getElementById('input-bort').addEventListener('change', function() {
 //Динамический парсинг выбора материала первого слоя
 document.getElementById('material-first-layer').addEventListener('input', () => {
     Material_First_Layer = parseInt(document.getElementById('material-first-layer').value) || 0;
-    console.log('Density:', Material_First_Layer);
 
     const SelectedFirstMaterialText = document.querySelector('#material-first-layer option:checked').textContent.trim();
     Cost_First_Layer = Cost_Foam[SelectedFirstMaterialText] || 0;
@@ -154,7 +150,6 @@ document.getElementById('bold-first-layer').addEventListener('input', () => {
 //Динамический парсинг выбора материала второго стлоя
 document.getElementById('material-second-layer').addEventListener('input', () => {
     Material_Second_Layer = parseInt(document.getElementById('material-second-layer').value) || 0;
-    console.log('Density:', Material_Second_Layer);
     const SelectedSecondMaterialText = document.querySelector('#material-second-layer option:checked').textContent.trim();
     Cost_Second_Layer = Cost_Foam[SelectedSecondMaterialText] || 0;
     calculate();
@@ -186,7 +181,6 @@ document.getElementById('bold-third-layer').addEventListener('input', () => {
 
 // Функция расчета всех значений и вывод на фронт
 function calculate() {
-    console.log('Calculating with:', Input_Mattress_Width, Input_Mattress_Length, Input_Mattress_Bold, Input_Mattress_Amount);
 
     // Считаем объем матраса
     let Mattress_Volume = Math.round(((Input_Mattress_Width / 1000) * (Input_Mattress_Length / 1000) * (Input_Mattress_Bold / 1000) * Input_Mattress_Amount) * 1000) / 1000;
@@ -196,11 +190,8 @@ function calculate() {
     // Рассчитываем стоимость слоев
     
     let Full_Cost_First_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_First_Layer/1000)*(Material_First_Layer)*Cost_First_Layer;
-    console.log(Cost_First_Layer, Full_Cost_First_Layer);
     let Full_Cost_Second_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Second_Layer/1000)*(Material_Second_Layer)*Cost_Second_Layer;
-    console.log(Cost_Second_Layer, Full_Cost_Second_Layer)
     let Full_Cost_Third_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Third_Layer/1000)*(Material_Third_Layer)*Cost_Third_Layer;
-    console.log(Cost_Third_Layer, Full_Cost_Third_Layer);
     let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*1000)/1000;
 
     //Расчёт стоимости ткани
@@ -215,7 +206,6 @@ function calculate() {
     document.getElementById('cost-foam').textContent = `Цена пены: ${Full_Cost_Foam} ₽`; // Убедитесь, что этот элемент существует на странице
     document.getElementById('full-textile-cost').textContent = `Цена рулона: ${Full_Textile_Cost} ₽`; // Убедитесь, что этот элемент существует на странице
     document.getElementById('full-cost-mattress').textContent = `Цена изделия: ${Full_Cost_Mattress} ₽`; // Убедитесь, что этот элемент существует на странице
-    console.log(Full_Cost_Foam);
 }
 
 
@@ -311,9 +301,119 @@ document.querySelectorAll('#results p').forEach(p => {
 });
 
 
+function visualize() {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
 
+    // Генерируем детали с учетом введенных пользователем данных
+    const details = countDetails();
+    const inputTextile = Input_Textile_Width;
 
+    // Получаем позиции деталей для визуализации
+    const { details: detailPositions } = bestFit(inputTextile, details);
 
+    // Настраиваем размеры холста
+    canvas.width = inputTextile;
+    canvas.height = detailPositions.reduce((max, pos) => Math.max(max, pos[1] + pos[3]), 0) + 20; // Добавляем немного места для легенды
 
+    // Очищаем холст перед рисованием
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Настройки сетки
+    const gridSize = 10;
+    ctx.strokeStyle = '#ddd';
+    ctx.lineWidth = 0.5;
 
+    // Рисуем координатную сетку
+    for (let x = 0; x <= canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+    }
+    for (let y = 0; y <= canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+    }
+
+    // Массив цветов для деталей
+    const colors = ['#FF6347', '#4682B4', '#32CD32', '#FFD700', '#FF69B4', '#8A2BE2', '#FF4500', '#DAA520'];
+
+    // Рисуем детали
+    detailPositions.forEach(([x, y, width, height], index) => {
+        ctx.fillStyle = colors[index % colors.length]; // Выбираем цвет из массива
+        ctx.fillRect(x, y, width, height);
+        ctx.strokeStyle = '#000';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x, y, width, height);
+
+        // Добавляем размеры деталей
+        ctx.fillStyle = '#000';
+        ctx.font = '12px Arial';
+        ctx.fillText(`${width}x${height}`, x + 5, y + 15);
+    });
+
+    // Добавляем интерактивность: отображение размеров при наведении
+    canvas.addEventListener('mousemove', function (e) {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        // Очищаем холст и перерисовываем детали
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 0.5;
+
+        // Рисуем сетку
+        for (let x = 0; x <= canvas.width; x += gridSize) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, canvas.height);
+            ctx.stroke();
+        }
+        for (let y = 0; y <= canvas.height; y += gridSize) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(canvas.width, y);
+            ctx.stroke();
+        }
+
+        detailPositions.forEach(([x, y, width, height], index) => {
+            ctx.fillStyle = colors[index % colors.length];
+            ctx.fillRect(x, y, width, height);
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x, y, width, height);
+
+            // Если мышь над деталью, отображаем размеры
+            if (mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height) {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.fillRect(x, y - 20, 100, 20); // Полупрозрачный фон для текста
+                ctx.fillStyle = '#000';
+                ctx.fillText(`Размер: ${width}x${height}`, x + 5, y - 5);
+            } else {
+                ctx.fillStyle = '#000';
+                ctx.fillText(`${width}x${height}`, x + 5, y + 15);
+            }
+        });
+    });
+
+    // Масштабирование холста с помощью колесика мыши
+    let scale = 1;
+    canvas.addEventListener('wheel', function (e) {
+        e.preventDefault();
+        const scaleAmount = 0.1;
+        scale += e.deltaY < 0 ? scaleAmount : -scaleAmount;
+        scale = Math.min(Math.max(0.5, scale), 2); // Ограничение масштаба от 0.5 до 2
+
+        ctx.setTransform(scale, 0, 0, scale, 0, 0);
+        visualize(); // Перерисовываем холст с новым масштабом
+    });
+
+    
+}
+
+// Активируем кнопку "Визуализировать", если все расчеты выполнены
+document.getElementById('visualize-button').disabled = false;
