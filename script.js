@@ -182,7 +182,7 @@ function calculate() {
     console.log(Cost_Second_Layer, Full_Cost_Second_Layer)
     let Full_Cost_Third_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Third_Layer/1000)*(Material_Third_Layer)*Cost_Third_Layer;
     console.log(Cost_Third_Layer, Full_Cost_Third_Layer);
-    let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*1000)/1000;
+    let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*Input_Mattress_Amount*1000)/1000;
 
     //Расчёт стоимости ткани
     let Full_Textile_Cost = Math.round((Input_Textile_Cost * (BF_Out.rollLength/1000))*1000)/1000;
