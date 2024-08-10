@@ -41,7 +41,6 @@ document.getElementById('input-mattress-width').addEventListener('blur', () => {
         console.log('Значения ширины и длины были изменены местами.');
     }
 
-    console.log('Width:', Input_Mattress_Width);
     calculate();
 });
 
