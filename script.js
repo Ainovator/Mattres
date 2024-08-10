@@ -26,9 +26,24 @@ const Cost_Foam = {
 
 calculate()
 // Динамический парсинг при изменении значений в полях ввода
-document.getElementById('input-mattress-width').addEventListener('input', () => {
-    Input_Mattress_Width = parseInt(document.getElementById('input-mattress-width').value) || 0;
-    calculate();
+document.getElementById('input-mattress-width').addEventListener('blur', () => {
+    const widthValue = document.getElementById('input-mattress-width').value;
+    const lengthValue = document.getElementById('input-mattress-length').value;
+
+    // Проверяем, что оба поля не пустые
+    if (widthValue && lengthValue) {
+        Input_Mattress_Width = parseInt(widthValue) || 0;
+        Input_Mattress_Length = parseInt(lengthValue) || 0;
+
+        if (Input_Mattress_Width > Input_Mattress_Length) {
+            // Меняем значения местами, если ширина больше длины
+            [Input_Mattress_Width, Input_Mattress_Length] = [Input_Mattress_Length, Input_Mattress_Width];
+            document.getElementById('input-mattress-width').value = Input_Mattress_Width;
+            document.getElementById('input-mattress-length').value = Input_Mattress_Length;
+        }
+
+        calculate();
+    }
 });
 
 document.getElementById('input-textile-cost').addEventListener('input', () => {
@@ -36,18 +51,25 @@ document.getElementById('input-textile-cost').addEventListener('input', () => {
     calculate();
 });
 
-document.getElementById('input-mattress-length').addEventListener('input', () => {
-    Input_Mattress_Length = parseInt(document.getElementById('input-mattress-length').value) || 0;
+document.getElementById('input-mattress-length').addEventListener('blur', () => {
+    const widthValue = document.getElementById('input-mattress-width').value;
+    const lengthValue = document.getElementById('input-mattress-length').value;
 
-    if (Input_Mattress_Length < Input_Mattress_Width) {
-        alert('Длина матраса не может быть меньше ширины. Значение длины будет установлено равным ширине.');
-        Input_Mattress_Length = Input_Mattress_Width;
-        document.getElementById('input-mattress-length').value = Input_Mattress_Width;
+    // Проверяем, что оба поля не пустые
+    if (widthValue && lengthValue) {
+        Input_Mattress_Width = parseInt(widthValue) || 0;
+        Input_Mattress_Length = parseInt(lengthValue) || 0;
+
+        if (Input_Mattress_Length < Input_Mattress_Width) {
+            // Меняем значения местами, если длина меньше ширины
+            [Input_Mattress_Width, Input_Mattress_Length] = [Input_Mattress_Length, Input_Mattress_Width];
+            document.getElementById('input-mattress-width').value = Input_Mattress_Width;
+            document.getElementById('input-mattress-length').value = Input_Mattress_Length;
+        }
+
+        calculate();
     }
-
-    calculate();
 });
-
 
 function updateMattressBold() {
     // Считаем сумму толщин слоёв пены
@@ -232,33 +254,31 @@ function countDetails() {
     return details;
 }
 
-//Раскладка деталей на рулоне
 function bestFit(width, parts) {
-    // Сортируем детали по высоте (в порядке убывания)
-    parts.sort((a, b) => b[1] - a[1]);
-    
+    // Сортируем детали по ширине и высоте, используя First Fit Decreasing
+    parts.sort((a, b) => Math.max(b[0], b[1]) - Math.max(a[0], a[1]));
+
     let currentHeight = 0; // Текущая высота рулона
     const rows = [];        // Массив для хранения рядов с деталями
     const details = [];     // Массив для хранения всех деталей с координатами
 
     for (const [partWidth, partHeight] of parts) {
         let placed = false;
-        
-        // Попытка разместить деталь в существующих рядах
+
+        // Пытаемся разместить деталь в существующих рядах
         for (const row of rows) {
             if (row.width + partWidth <= width) {
-                // Добавляем деталь в ряд
                 const x = row.width;
                 const y = row.y;
                 details.push([x, y, partWidth, partHeight]);
-                
+
                 row.width += partWidth;
                 row.height = Math.max(row.height, partHeight);
                 placed = true;
                 break;
             }
         }
-        
+
         // Если деталь не удалось разместить в существующих рядах, создаём новый ряд
         if (!placed) {
             const x = 0;
@@ -276,6 +296,7 @@ function bestFit(width, parts) {
         rollLength: currentHeight
     };
 }
+
 
 
 //Всякая декоративная вещь
