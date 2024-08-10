@@ -25,8 +25,22 @@ const Cost_Foam = {
 
 calculate()
 // Динамический парсинг при изменении значений в полях ввода
-document.getElementById('input-mattress-width').addEventListener('input', () => {
+document.getElementById('input-mattress-width').addEventListener('blur', () => {
     Input_Mattress_Width = parseInt(document.getElementById('input-mattress-width').value) || 0;
+
+    if (Input_Mattress_Width > Input_Mattress_Length && Input_Mattress_Length !== 0 && Input_Mattress_Width !== 0) {
+        // Меняем значения местами
+        const temp = Input_Mattress_Length;
+        Input_Mattress_Length = Input_Mattress_Width;
+        Input_Mattress_Width = temp;
+
+        // Обновляем значения в полях ввода
+        document.getElementById('input-mattress-width').value = Input_Mattress_Width;
+        document.getElementById('input-mattress-length').value = Input_Mattress_Length;
+
+        console.log('Значения ширины и длины были изменены местами.');
+    }
+
     console.log('Width:', Input_Mattress_Width);
     calculate();
 });
@@ -36,11 +50,26 @@ document.getElementById('input-textile-cost').addEventListener('input', () => {
     calculate();
 });
 
-document.getElementById('input-mattress-length').addEventListener('input', () => {
+document.getElementById('input-mattress-length').addEventListener('blur', () => {
     Input_Mattress_Length = parseInt(document.getElementById('input-mattress-length').value) || 0;
+
+    if (Input_Mattress_Length < Input_Mattress_Width && Input_Mattress_Length !== 0 && Input_Mattress_Width !== 0) {
+        // Меняем значения местами
+        const temp = Input_Mattress_Width;
+        Input_Mattress_Width = Input_Mattress_Length;
+        Input_Mattress_Length = temp;
+
+        // Обновляем значения в полях ввода
+        document.getElementById('input-mattress-width').value = Input_Mattress_Width;
+        document.getElementById('input-mattress-length').value = Input_Mattress_Length;
+
+        console.log('Значения длины и ширины были изменены местами.');
+    }
+
     console.log('Length:', Input_Mattress_Length);
     calculate();
 });
+
 
 
 function updateMattressBold() {
