@@ -8,14 +8,14 @@ let Input_Textile_Cost = parseInt(document.getElementById('input-textile-cost').
 let Material_First_Layer = parseInt(document.getElementById('material-first-layer').value) || 0;
 let Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
 let Material_Second_Layer = parseInt(document.getElementById('material-second-layer').value) || 0;
-let Cost_First_Layer = 0;
-let Cost_Second_Layer = 0;
-let Cost_Third_Layer = 0;
 let Bold_Second_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
 let Material_Third_Layer = parseInt(document.getElementById('material-third-layer').value) || 0;
 let Bold_Third_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
 let Input_Cant_Value = 0; 
 let Input_Bort_Value = 0; 
+let Cost_First_Layer = 0;
+let Cost_Second_Layer = 0;
+let Cost_Third_Layer = 0;
 let ScaleUp = 20;
 const Cost_Foam = {
     HR3030: 540,
@@ -217,8 +217,8 @@ function calculate() {
     let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*1000)/1000;
 
     //Расчёт стоимости ткани
-    let Full_Textile_Cost = Input_Textile_Cost * (BF_Out.rollLength/1000);
-    let Full_Cost_Mattress = Full_Textile_Cost + Full_Cost_Foam;
+    let Full_Textile_Cost = Math.round((Input_Textile_Cost * (BF_Out.rollLength/1000)*1000)/1000);
+    let Full_Cost_Mattress = Math.round((((Full_Textile_Cost + Full_Cost_Foam)*1.2*1.6*1.3)*1000)/1000);
 
 
     // Выводим результат на фронт
