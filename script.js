@@ -235,64 +235,99 @@ function countDetails() {
     
     if (Input_Mattress_Width < Input_Textile_Width) {
         for (let i = 0; i < Input_Mattress_Amount * 2; i++) {
-            details.push([Input_Mattress_Width + ScaleUp, Input_Mattress_Length + ScaleUp]);
-            details.push([Input_Mattress_Width + ScaleUp, Input_Mattress_Bold + ScaleUp]);
-            details.push([Input_Mattress_Bold + ScaleUp, Input_Mattress_Length + ScaleUp]);
+            details.push([Input_Mattress_Width + ScaleUp*2, Input_Mattress_Length + ScaleUp]);
+            details.push([Input_Mattress_Width + ScaleUp*2, Input_Mattress_Bold + ScaleUp]);
+            details.push([Input_Mattress_Bold + ScaleUp*2, Input_Mattress_Length + ScaleUp]);
         }
     } else {
         for (let i = 0; i < Input_Mattress_Amount * 2; i++) {
-            details.push([(Input_Mattress_Width / 2) + ScaleUp, Input_Mattress_Length + ScaleUp]);
-            details.push([(Input_Mattress_Width / 2) + ScaleUp, Input_Mattress_Length + ScaleUp]);
-            details.push([Input_Mattress_Width + ScaleUp, Input_Mattress_Bold + ScaleUp]);
-            details.push([Input_Mattress_Bold + ScaleUp, Input_Mattress_Length + ScaleUp]);
+            details.push([(Input_Mattress_Width / 2) + ScaleUp*2, Input_Mattress_Length + ScaleUp]);
+            details.push([(Input_Mattress_Width / 2) + ScaleUp*2, Input_Mattress_Length + ScaleUp]);
+            details.push([(Input_Mattress_Width/2) + ScaleUp*2, Input_Mattress_Bold + ScaleUp]);
+            details.push([Input_Mattress_Bold + ScaleUp*2, Input_Mattress_Length + ScaleUp]);
         }
     }
     
+    console.log("Список деталей:", details); // Добавляем вывод для проверки
     return details;
 }
 
+
 function bestFit(width, parts) {
-    // Сортируем детали по ширине и высоте, используя First Fit Decreasing
-    parts.sort((a, b) => Math.max(b[0], b[1]) - Math.max(a[0], a[1]));
+    let minRollLength = Infinity;
+    let bestArrangement = [];
 
-    let currentHeight = 0; // Текущая высота рулона
-    const rows = [];        // Массив для хранения рядов с деталями
-    const details = [];     // Массив для хранения всех деталей с координатами
-
-    for (const [partWidth, partHeight] of parts) {
-        let placed = false;
-
-        // Пытаемся разместить деталь в существующих рядах
-        for (const row of rows) {
-            if (row.width + partWidth <= width) {
-                const x = row.width;
-                const y = row.y;
-                details.push([x, y, partWidth, partHeight]);
-
-                row.width += partWidth;
-                row.height = Math.max(row.height, partHeight);
-                placed = true;
-                break;
-            }
+    class Node {
+        constructor(x, y, width, height) {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.used = false;
+            this.right = null;
+            this.down = null;
         }
 
-        // Если деталь не удалось разместить в существующих рядах, создаём новый ряд
-        if (!placed) {
-            const x = 0;
-            const y = currentHeight;
-            details.push([x, y, partWidth, partHeight]);
-
-            rows.push({ width: partWidth, height: partHeight, y: currentHeight });
-            currentHeight += partHeight;
+        insert(partWidth, partHeight) {
+            if (this.used) {
+                return this.right.insert(partWidth, partHeight) || this.down.insert(partWidth, partHeight);
+            } else if (partWidth <= this.width && partHeight <= this.height) {
+                this.used = true;
+                this.right = new Node(this.x + partWidth, this.y, this.width - partWidth, partHeight);
+                this.down = new Node(this.x, this.y + partHeight, this.width, this.height - partHeight);
+                return this;
+            } else {
+                return null;
+            }
         }
     }
 
-    // Возвращаем список деталей и общую длину рулона
+    function fit(parts, width) {
+        const root = new Node(0, 0, width, Infinity);
+        let maxY = 0;
+
+        parts.sort((a, b) => b[1] - a[1]); // Сортируем по высоте
+
+        for (let part of parts) {
+            const node = root.insert(part[0], part[1]);
+            if (node) {
+                part.x = node.x;
+                part.y = node.y;
+                maxY = Math.max(maxY, node.y + part[1]);
+            } else {
+                return Infinity;
+            }
+        }
+        return maxY;
+    }
+
+    const rollLength = fit(parts, width);
+
+    if (rollLength < minRollLength) {
+        minRollLength = rollLength;
+        bestArrangement = parts.map(part => ({
+            x: part.x,
+            y: part.y,
+            width: part[0],
+            height: part[1]
+        }));
+    }
+
     return {
-        details: details,
-        rollLength: currentHeight
+        details: bestArrangement,
+        rollLength: minRollLength
     };
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -332,7 +367,7 @@ function visualize() {
 
     // Настраиваем размеры холста
     canvas.width = inputTextile;
-    canvas.height = detailPositions.reduce((max, pos) => Math.max(max, pos[1] + pos[3]), 0) + 20; // Добавляем немного места для легенды
+    canvas.height = detailPositions.reduce((max, pos) => Math.max(max, pos.y + pos.height), 0) + 20; // Добавляем немного места для легенды
 
     // Очищаем холст перед рисованием
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -362,7 +397,7 @@ function visualize() {
     let colorIndex = 0;
 
     // Рисуем детали
-    detailPositions.forEach(([x, y, width, height]) => {
+    detailPositions.forEach(({ x, y, width, height }) => {
         const sizeKey = `${width}x${height}`; // Создаем уникальный ключ на основе размера
 
         if (!sizeToColorMap[sizeKey]) {
@@ -384,78 +419,9 @@ function visualize() {
         ctx.fillText(`${width}x${height}`, x + 5, y + 15);
     });
 
-    // Добавляем интерактивность: отображение размеров при наведении
-    canvas.addEventListener('mousemove', function (e) {
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
 
-        // Очищаем холст и перерисовываем детали
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = '#ddd';
-        ctx.lineWidth = 0.5;
-
-        // Рисуем сетку
-        for (let x = 0; x <= canvas.width; x += gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, canvas.height);
-            ctx.stroke();
-        }
-        for (let y = 0; y <= canvas.height; y += gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(canvas.width, y);
-            ctx.stroke();
-        }
-
-        detailPositions.forEach(([x, y, width, height], index) => {
-            const sizeKey = `${width}x${height}`;
-            const color = sizeToColorMap[sizeKey];
-
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y, width, height);
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 1;
-            ctx.strokeRect(x, y, width, height);
-
-            // Если мышь над деталью, отображаем размеры
-            if (mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height) {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                ctx.fillRect(x, y - 20, 100, 20); // Полупрозрачный фон для текста
-                ctx.fillStyle = '#000';
-                ctx.fillText(`Размер: ${width}x${height}`, x + 5, y - 5);
-            } else {
-                ctx.fillStyle = '#000';
-                ctx.fillText(`${width}x${height}`, x + 5, y + 15);
-            }
-        });
-    });
-
-    // Масштабирование холста с помощью колесика мыши
-    let scale = 1;
-    canvas.addEventListener('wheel', function (e) {
-        e.preventDefault();
-        const scaleAmount = 0.1;
-        scale += e.deltaY < 0 ? scaleAmount : -scaleAmount;
-        scale = Math.min(Math.max(0.5, scale), 2); // Ограничение масштаба от 0.5 до 2
-
-        ctx.setTransform(scale, 0, 0, scale, 0, 0);
-        visualize(); // Перерисовываем холст с новым масштабом
-    });
 }
 
-    // Масштабирование холста с помощью колесика мыши
-    let scale = 1;
-    canvas.addEventListener('wheel', function (e) {
-        e.preventDefault();
-        const scaleAmount = 0.1;
-        scale += e.deltaY < 0 ? scaleAmount : -scaleAmount;
-        scale = Math.min(Math.max(0.5, scale), 2); // Ограничение масштаба от 0.5 до 2
-
-        ctx.setTransform(scale, 0, 0, scale, 0, 0);
-        visualize(); // Перерисовываем холст с новым масштабом
-    });
 
     
 
