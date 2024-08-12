@@ -205,7 +205,6 @@ document.getElementById('bold-third-layer').addEventListener('input', () => {
 function calculate() {
 
     // Считаем объем матраса
-    let Mattress_Volume = Math.round(((Input_Mattress_Width / 1000) * (Input_Mattress_Length / 1000) * (Input_Mattress_Bold / 1000) * Input_Mattress_Amount) * 1000) / 1000;
     let details = countDetails();
     let BF_Out = bestFit(Input_Textile_Width, details);
 
@@ -222,9 +221,7 @@ function calculate() {
 
 
     // Выводим результат на фронт
-    document.getElementById('mattress-volume').textContent = `Объём матраса: ${Mattress_Volume} м³`;
     document.getElementById('textile-length').textContent = `Длина рулона: ${BF_Out.rollLength} мм`;
-    // document.getElementById('details-list').textContent = `Детали: ${details.map(d => d.join(' x ')).join(', ')}`;
     document.getElementById('cost-foam').textContent = `Цена пены: ${Full_Cost_Foam} ₽`; // Убедитесь, что этот элемент существует на странице
     document.getElementById('full-textile-cost').textContent = `Цена рулона: ${Full_Textile_Cost} ₽`; // Убедитесь, что этот элемент существует на странице
     document.getElementById('full-cost-mattress').textContent = `Цена изделия: ${Full_Cost_Mattress} ₽`; // Убедитесь, что этот элемент существует на странице
