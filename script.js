@@ -123,8 +123,6 @@ document.getElementById('input-bort').addEventListener('change', function() {
     }
     calculate();
 });
-
-
 //Динамическое отслеживание толщины и материала первого слоя
 document.getElementById('material-first-layer').addEventListener('input', () => {
     Material_First_Layer = parseInt(document.getElementById('material-first-layer').value) || 0;
@@ -138,7 +136,6 @@ document.getElementById('bold-first-layer').addEventListener('input', () => {
     calculate();
     updateMattressBold()
 });
-
 //Динамическое отслеживание толщины и материала второго слоя
 document.getElementById('material-second-layer').addEventListener('input', () => {
     Material_Second_Layer = parseInt(document.getElementById('material-second-layer').value) || 0;
@@ -151,7 +148,6 @@ document.getElementById('bold-second-layer').addEventListener('input', () => {
     calculate();
     updateMattressBold()
 });
-
 //Динамическое отслеживание толщины и материала второго слоя
 document.getElementById('material-third-layer').addEventListener('input', () => {
     Material_Third_Layer = parseInt(document.getElementById('material-third-layer').value) || 0;
