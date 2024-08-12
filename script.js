@@ -12,6 +12,8 @@ let Material_Third_Layer = parseInt(document.getElementById('material-third-laye
 let Bold_Third_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
 let Input_Full_Work = parseInt(document.getElementById('input-full-work').value) || 0;
 let MarkUp = parseInt(document.getElementById('markup-output').value) || 0;
+let alertShown = false; // Флаг для отслеживания, был ли показан alert
+
 let Input_Textile_Width = 1390;
 let Input_Cant_Value = 0; 
 let Input_Bort_Value = 0; 
@@ -106,27 +108,47 @@ document.getElementById('input-cant').addEventListener('change', function() {
     updateMattressImage()
 });
 //Динамическое отслеживание наличия борта
+// Динамическое отслеживание наличия борта
 document.getElementById('input-bort').addEventListener('change', function() {
     const cantSwitch = document.getElementById('input-cant');
- 
+    const zipperSelect = document.getElementById('zipper-select');
+    const zipperOptionSide = zipperSelect.querySelector('option[value="side"]');
+
     if (this.checked) {
-        // Если "Борт" включен, проверяем, нужен ли "Кант"
+        // Если "Борт" включен
         Input_Bort_Value = 1;
+        zipperOptionSide.disabled = false; // Разблокируем опцию "Молния на борту"
         if (cantSwitch.checked) {
             ScaleUp = 50;
         } else {
             ScaleUp = 20;
         }
     } else {
-        // Если "Борт" выключен, обязательно выключаем "Кант"
+        // Если "Борт" выключен
         Input_Bort_Value = 0;
         Input_Cant_Value = 0;
         ScaleUp = 20;
-        cantSwitch.checked = false; // Обновляем состояние переключателя "Кант"
+        cantSwitch.checked = false; // Отключаем "Кант"
+        zipperOptionSide.disabled = true; // Блокируем опцию "Молния на борту"
+        if (zipperSelect.value === "side") {
+            zipperSelect.value = "0"; // Сбрасываем выбор, если была выбрана "Молния на борту"
+        }
     }
     calculate();
-    updateMattressImage()
+    updateMattressImage();
 });
+
+// Также добавьте вызов для блокировки опции при загрузке страницы, если борт выключен
+document.addEventListener('DOMContentLoaded', function() {
+    const bortSwitch = document.getElementById('input-bort');
+    const zipperSelect = document.getElementById('zipper-select');
+    const zipperOptionSide = zipperSelect.querySelector('option[value="side"]');
+
+    if (!bortSwitch.checked) {
+        zipperOptionSide.disabled = true; // Блокируем опцию "Молния на борту"
+    }
+});
+
 //Динамическое отслеживание толщины и материала первого слоя
 document.getElementById('material-first-layer').addEventListener('input', () => {
     Material_First_Layer = parseInt(document.getElementById('material-first-layer').value) || 0;
@@ -211,11 +233,20 @@ function calculate() {
     let BF_Out = bestFit(Input_Textile_Width, details);
 
     // Рассчитываем стоимость слоев
-    if (Input_Mattress_Bold>200){
-        Otbortovka=((Input_Mattress_Length/1000)*(Input_Mattress_Bold/1000)*25*2*476)+((Input_Mattress_Width/1000)*(Input_Mattress_Bold/1000)*25*2*476);
-        alert(`Добавлена отбортока!`);
+    if (Input_Mattress_Bold > 200) {
+        Otbortovka = ((Input_Mattress_Length / 1000) * (Input_Mattress_Bold / 1000) * 25 * 2 * 476) +
+                     ((Input_Mattress_Width / 1000) * (Input_Mattress_Bold / 1000) * 25 * 2 * 476);
         
+        if (!alertShown) { // Проверяем, был ли уже показан alert
+            alert(`Добавлена отбортовка!`);
+            alertShown = true; // Устанавливаем флаг, чтобы больше не показывать alert
+        }
+    } else {
+        Otbortovka = 0;
+        alertShown = false; // Сбрасываем флаг, если условие больше не выполняется
     }
+
+    
 
     let Full_Cost_First_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_First_Layer/1000)*(Material_First_Layer)*Cost_First_Layer;
     let Full_Cost_Second_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Second_Layer/1000)*(Material_Second_Layer)*Cost_Second_Layer;
@@ -430,3 +461,13 @@ document.getElementById('visualize-button').disabled = false;
 
 // Отключение ползунка
 document.getElementById('input-mattress-bold').disabled = true;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const bortSwitch = document.getElementById('input-bort');
+    const zipperSelect = document.getElementById('zipper-select');
+    const zipperOptionSide = zipperSelect.querySelector('option[value="side"]');
+
+    if (!bortSwitch.checked) {
+        zipperOptionSide.disabled = true; // Блокируем опцию "Молния на борту"
+    }
+});
