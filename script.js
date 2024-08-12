@@ -96,34 +96,26 @@ document.getElementById('input-cant').addEventListener('change', function() {
         Input_Cant_Value = 1; 
         Input_Bort_Value = 1; 
         ScaleUp = 50;
-        cantImage.src = '/images/cant+bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" включены
         bortSwitch.checked = true; // Обновляем состояние переключателя "Борт"
     } else {
         // Если "Кант" выключен, но "Борт" включен
         Input_Cant_Value = 0;
         ScaleUp = 20;
-        if (bortSwitch.checked) {
-            cantImage.src = '/images/only-bort.jpg'; // Путь к картинке, когда только "Борт" включен
-        } else {
-            cantImage.src = '/images/cant-bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" выключены
-        }
     }
     calculate();
+    updateMattressImage()
 });
 //Динамическое отслеживание наличия борта
 document.getElementById('input-bort').addEventListener('change', function() {
     const cantSwitch = document.getElementById('input-cant');
-    const cantImage = document.getElementById('cant-image');
-
+ 
     if (this.checked) {
         // Если "Борт" включен, проверяем, нужен ли "Кант"
         Input_Bort_Value = 1;
         if (cantSwitch.checked) {
             ScaleUp = 50;
-            cantImage.src = '/images/cant+bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" включены
         } else {
             ScaleUp = 20;
-            cantImage.src = '/images/only-bort.jpg'; // Путь к картинке, когда только "Борт" включен
         }
     } else {
         // Если "Борт" выключен, обязательно выключаем "Кант"
@@ -131,9 +123,9 @@ document.getElementById('input-bort').addEventListener('change', function() {
         Input_Cant_Value = 0;
         ScaleUp = 20;
         cantSwitch.checked = false; // Обновляем состояние переключателя "Кант"
-        cantImage.src = '/images/cant-bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" выключены
     }
     calculate();
+    updateMattressImage()
 });
 //Динамическое отслеживание толщины и материала первого слоя
 document.getElementById('material-first-layer').addEventListener('input', () => {
@@ -179,7 +171,33 @@ document.getElementById('markup-range').addEventListener('input', function() {
     calculate()
 });
 //<Блок динамического отслеживания вводимых данных>
+function updateMattressImage() {
+    const cantSwitch = document.getElementById('input-cant').checked;
+    const bortSwitch = document.getElementById('input-bort').checked;
+    const zipperSelect = document.getElementById('zipper-select').value;
+    const mattressImage = document.getElementById('cant-image');
 
+    if (bortSwitch && cantSwitch && zipperSelect === "side") {
+        mattressImage.src = 'images/bort+cant-side.jpg';
+    } else if (bortSwitch && cantSwitch && zipperSelect === "bottom") {
+        mattressImage.src = 'images/bort+cant-bottom.jpg';
+    } else if (bortSwitch && !cantSwitch && zipperSelect === "bottom") {
+        mattressImage.src = 'images/only-bort-bottom.jpg';
+    } else if (bortSwitch && !cantSwitch && zipperSelect === "side") {
+        mattressImage.src = 'images/only-bort-side.jpg';
+    } else if (!bortSwitch && !cantSwitch && zipperSelect === "side") {
+        mattressImage.src = 'images/no-bort-side.jpg';
+    } else if (!bortSwitch && !cantSwitch && zipperSelect === "bottom") {
+        mattressImage.src = 'images/no-bort-bottom.jpg';
+    } else {
+        mattressImage.src = 'images/only-bort-side.jpg'; // Изображение по умолчанию
+    }
+}
+
+// Привязываем обновление изображения к изменению параметров
+document.getElementById('input-cant').addEventListener('change', updateMattressImage);
+document.getElementById('input-bort').addEventListener('change', updateMattressImage);
+document.getElementById('zipper-select').addEventListener('change', updateMattressImage);
 
 
 
@@ -191,7 +209,11 @@ function calculate() {
     let BF_Out = bestFit(Input_Textile_Width, details);
 
     // Рассчитываем стоимость слоев
-
+    if (Input_Mattress_Bold>200){
+        Otbortovka=((Input_Mattress_Length/1000)*(Input_Mattress_Bold/1000)*25*2*476)+((Input_Mattress_Width/1000)*(Input_Mattress_Bold/1000)*25*2*476);
+        alert(`Добавлена отбортока!`);
+        
+    }
 
     let Full_Cost_First_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_First_Layer/1000)*(Material_First_Layer)*Cost_First_Layer;
     let Full_Cost_Second_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Second_Layer/1000)*(Material_Second_Layer)*Cost_Second_Layer;
