@@ -12,8 +12,7 @@ let Material_Third_Layer = parseInt(document.getElementById('material-third-laye
 let Bold_Third_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
 let Input_Full_Work = parseInt(document.getElementById('input-full-work').value) || 0;
 let MarkUp = parseInt(document.getElementById('markup-output').value) || 0;
-let alertShown = false; // Флаг для отслеживания, был ли показан alert
-
+let alertShown = false; 
 let Input_Textile_Width = 1390;
 let Input_Cant_Value = 0; 
 let Input_Bort_Value = 0; 
@@ -28,6 +27,9 @@ const Cost_Foam = {
     VE3508: 535,
     NP2300: 318,
 };
+document.getElementById('input-cant').addEventListener('change', updateMattressImage);
+document.getElementById('input-bort').addEventListener('change', updateMattressImage);
+document.getElementById('zipper-select').addEventListener('change', updateMattressImage);
 //<Блок первоначального получения переменных>
 
 
@@ -35,6 +37,7 @@ calculate()
 
 
 //<Блок динамического отслеживания вводимых данных>
+//Динамическое отслеживание ширины ткани
 document.getElementById('input-mattress-width').addEventListener('blur', () => {
     const widthValue = document.getElementById('input-mattress-width').value;
     const lengthValue = document.getElementById('input-mattress-length').value;
@@ -107,7 +110,6 @@ document.getElementById('input-cant').addEventListener('change', function() {
     calculate();
     updateMattressImage()
 });
-//Динамическое отслеживание наличия борта
 // Динамическое отслеживание наличия борта
 document.getElementById('input-bort').addEventListener('change', function() {
     const cantSwitch = document.getElementById('input-cant');
@@ -137,18 +139,6 @@ document.getElementById('input-bort').addEventListener('change', function() {
     calculate();
     updateMattressImage();
 });
-
-// Также добавьте вызов для блокировки опции при загрузке страницы, если борт выключен
-document.addEventListener('DOMContentLoaded', function() {
-    const bortSwitch = document.getElementById('input-bort');
-    const zipperSelect = document.getElementById('zipper-select');
-    const zipperOptionSide = zipperSelect.querySelector('option[value="side"]');
-
-    if (!bortSwitch.checked) {
-        zipperOptionSide.disabled = true; // Блокируем опцию "Молния на борту"
-    }
-});
-
 //Динамическое отслеживание толщины и материала первого слоя
 document.getElementById('material-first-layer').addEventListener('input', () => {
     Material_First_Layer = parseInt(document.getElementById('material-first-layer').value) || 0;
@@ -186,13 +176,19 @@ document.getElementById('bold-third-layer').addEventListener('input', () => {
     calculate();
     updateMattressBold()
 });
-
+//Динамическое отслеживание наценки
 document.getElementById('markup-range').addEventListener('input', function() {
     document.getElementById('markup-output').value = this.value;
     MarkUp = parseInt(document.getElementById('markup-output').value) || 0;
     calculate()
 });
 //<Блок динамического отслеживания вводимых данных>
+
+
+
+
+//<Функциональный блок>
+// Функция обновления изображения от параметров
 function updateMattressImage() {
     const cantSwitch = document.getElementById('input-cant').checked;
     const bortSwitch = document.getElementById('input-bort').checked;
@@ -217,14 +213,6 @@ function updateMattressImage() {
         mattressImage.src = 'images/Main.jpg'; // Изображение по умолчанию
     }
 }
-
-
-document.getElementById('input-cant').addEventListener('change', updateMattressImage);
-document.getElementById('input-bort').addEventListener('change', updateMattressImage);
-document.getElementById('zipper-select').addEventListener('change', updateMattressImage);
-
-
-
 // Функция расчета всех значений и вывод на фронт
 function calculate() {
 
@@ -266,7 +254,6 @@ function calculate() {
     document.getElementById('cost-work').textContent = `Цена работ: ${Full_Work_Cost} ₽`; // Убедитесь, что этот элемент существует на странице
     document.getElementById('full-cost-mattress').textContent = `Цена изделия: ${Full_Cost_Mattress} ₽`; // Убедитесь, что этот элемент существует на странице
 }
-
 //Раскладка деталей матраса исходя из размеров
 function countDetails() {
     let details = [];
@@ -289,7 +276,7 @@ function countDetails() {
     console.log("Список деталей:", details); // Добавляем вывод для проверки
     return details;
 }
-//Раскладка деталей ну рулоне
+//Раскладка деталей на рулоне
 function bestFit(width, parts) {
     let minRollLength = Infinity;
     let bestArrangement = [];
@@ -367,19 +354,6 @@ function updateMattressBold() {
 
     calculate(); // Пересчитываем все значения
 }
-//Копирование текста в буфер обмена
-function copyToClipboard(text) {
-    const tempInput = document.createElement('input');
-    tempInput.style.position = 'absolute';
-    tempInput.style.left = '-9999px';
-    tempInput.value = text;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempInput);
-    alert(`Скопировано в буфер обмена: ${text}`);
-}
-
 //Визулаизация деталей на странице
 function visualize() {
     const canvas = document.getElementById('canvas');
@@ -448,20 +422,35 @@ function visualize() {
 
 
 }
+//Копирование текста в буфер обмена
+function copyToClipboard(text) {
+    const tempInput = document.createElement('input');
+    tempInput.style.position = 'absolute';
+    tempInput.style.left = '-9999px';
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    alert(`Скопировано в буфер обмена: ${text}`);
+}
+//<Функциональный блок>
 
+
+
+
+//<Декоративный обработки>
 // Добавление обработчика событий для каждого <p> внутри #results
 document.querySelectorAll('#results p').forEach(p => {
     p.addEventListener('click', function() {
         copyToClipboard(this.textContent);
     });
 });
-
 // Активируем кнопку "Визуализировать", если все расчеты выполнены
 document.getElementById('visualize-button').disabled = false;
-
 // Отключение ползунка
 document.getElementById('input-mattress-bold').disabled = true;
-
+// Вызов для блокировки опции при загрузке страницы, если борт выключен
 document.addEventListener('DOMContentLoaded', function() {
     const bortSwitch = document.getElementById('input-bort');
     const zipperSelect = document.getElementById('zipper-select');
@@ -471,3 +460,6 @@ document.addEventListener('DOMContentLoaded', function() {
         zipperOptionSide.disabled = true; // Блокируем опцию "Молния на борту"
     }
 });
+//<Декоративный блок>
+
+
