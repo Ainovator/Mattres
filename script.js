@@ -10,6 +10,8 @@ let Material_Second_Layer = parseInt(document.getElementById('material-second-la
 let Bold_Second_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
 let Material_Third_Layer = parseInt(document.getElementById('material-third-layer').value) || 0;
 let Bold_Third_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
+let Input_Full_Work = parseInt(document.getElementById('input-full-work').value) || 0;
+let MarkUp = parseInt(document.getElementById('markup-output').value) || 0;
 let Input_Textile_Width = 1390;
 let Input_Cant_Value = 0; 
 let Input_Bort_Value = 0; 
@@ -17,6 +19,7 @@ let Cost_First_Layer = 0;
 let Cost_Second_Layer = 0;
 let Cost_Third_Layer = 0;
 let ScaleUp = 20;
+let Otbortovka = 0;
 const Cost_Foam = {
     HR3030: 540,
     HR3020: 560,
@@ -24,6 +27,10 @@ const Cost_Foam = {
     NP2300: 318,
 };
 //<Блок первоначального получения переменных>
+
+
+calculate()
+
 
 //<Блок динамического отслеживания вводимых данных>
 document.getElementById('input-mattress-width').addEventListener('blur', () => {
@@ -47,6 +54,11 @@ document.getElementById('input-mattress-width').addEventListener('blur', () => {
 //Динамическое отслеживание цены ткани
 document.getElementById('input-textile-cost').addEventListener('input', () => {
     Input_Textile_Cost = parseInt(document.getElementById('input-textile-cost').value) || 0;
+    calculate();
+});
+//Динамическое отслеживание цены работ
+document.getElementById('input-full-work').addEventListener('input', () => {
+    Input_Full_Work = parseInt(document.getElementById('input-full-work').value) || 0;
     calculate();
 });
 //Динамическое отслеживание длины матраса
@@ -84,16 +96,16 @@ document.getElementById('input-cant').addEventListener('change', function() {
         Input_Cant_Value = 1; 
         Input_Bort_Value = 1; 
         ScaleUp = 50;
-        cantImage.src = 'cant+bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" включены
+        cantImage.src = '/images/cant+bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" включены
         bortSwitch.checked = true; // Обновляем состояние переключателя "Борт"
     } else {
         // Если "Кант" выключен, но "Борт" включен
         Input_Cant_Value = 0;
         ScaleUp = 20;
         if (bortSwitch.checked) {
-            cantImage.src = 'only-bort.jpeg'; // Путь к картинке, когда только "Борт" включен
+            cantImage.src = '/images/only-bort.jpg'; // Путь к картинке, когда только "Борт" включен
         } else {
-            cantImage.src = 'cant-bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" выключены
+            cantImage.src = '/images/cant-bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" выключены
         }
     }
     calculate();
@@ -108,10 +120,10 @@ document.getElementById('input-bort').addEventListener('change', function() {
         Input_Bort_Value = 1;
         if (cantSwitch.checked) {
             ScaleUp = 50;
-            cantImage.src = 'cant+bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" включены
+            cantImage.src = '/images/cant+bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" включены
         } else {
             ScaleUp = 20;
-            cantImage.src = 'only-bort.jpeg'; // Путь к картинке, когда только "Борт" включен
+            cantImage.src = '/images/only-bort.jpg'; // Путь к картинке, когда только "Борт" включен
         }
     } else {
         // Если "Борт" выключен, обязательно выключаем "Кант"
@@ -119,7 +131,7 @@ document.getElementById('input-bort').addEventListener('change', function() {
         Input_Cant_Value = 0;
         ScaleUp = 20;
         cantSwitch.checked = false; // Обновляем состояние переключателя "Кант"
-        cantImage.src = 'cant-bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" выключены
+        cantImage.src = '/images/cant-bort.jpg'; // Путь к картинке, когда и "Кант", и "Борт" выключены
     }
     calculate();
 });
@@ -160,6 +172,12 @@ document.getElementById('bold-third-layer').addEventListener('input', () => {
     calculate();
     updateMattressBold()
 });
+
+document.getElementById('markup-range').addEventListener('input', function() {
+    document.getElementById('markup-output').value = this.value;
+    MarkUp = parseInt(document.getElementById('markup-output').value) || 0;
+    calculate()
+});
 //<Блок динамического отслеживания вводимых данных>
 
 
@@ -173,21 +191,24 @@ function calculate() {
     let BF_Out = bestFit(Input_Textile_Width, details);
 
     // Рассчитываем стоимость слоев
-    
+
+
     let Full_Cost_First_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_First_Layer/1000)*(Material_First_Layer)*Cost_First_Layer;
     let Full_Cost_Second_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Second_Layer/1000)*(Material_Second_Layer)*Cost_Second_Layer;
     let Full_Cost_Third_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Third_Layer/1000)*(Material_Third_Layer)*Cost_Third_Layer;
     let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*1000)/1000;
-
+    let Full_Work_Cost = Math.round(((Input_Full_Work*9)/1000)*1000);
     //Расчёт стоимости ткани
     let Full_Textile_Cost = Math.round((Input_Textile_Cost * (BF_Out.rollLength/1000)*1000)/1000);
-    let Full_Cost_Mattress = Math.round((((Full_Textile_Cost + Full_Cost_Foam)*1.2*1.6*1.3)*1000)/1000);
+    let Full_Cost_Mattress = Math.round((((Full_Textile_Cost + Full_Cost_Foam+Full_Work_Cost+Otbortovka)*1.2*1.6*((MarkUp/100)+1)*1000)/1000));
+    console.log(MarkUp)
 
 
     // Выводим результат на фронт
-    document.getElementById('textile-length').textContent = `Длина рулона: ${BF_Out.rollLength} мм`;
+    document.getElementById('textile-length').textContent = `Длина отреза: ${BF_Out.rollLength} мм`;
+    document.getElementById('full-textile-cost').textContent = `Цена отреза: ${Full_Textile_Cost} ₽`; // Убедитесь, что этот элемент существует на странице
     document.getElementById('cost-foam').textContent = `Цена пены: ${Full_Cost_Foam} ₽`; // Убедитесь, что этот элемент существует на странице
-    document.getElementById('full-textile-cost').textContent = `Цена рулона: ${Full_Textile_Cost} ₽`; // Убедитесь, что этот элемент существует на странице
+    document.getElementById('cost-work').textContent = `Цена работ: ${Full_Work_Cost} ₽`; // Убедитесь, что этот элемент существует на странице
     document.getElementById('full-cost-mattress').textContent = `Цена изделия: ${Full_Cost_Mattress} ₽`; // Убедитесь, что этот элемент существует на странице
 }
 
@@ -382,3 +403,6 @@ document.querySelectorAll('#results p').forEach(p => {
 
 // Активируем кнопку "Визуализировать", если все расчеты выполнены
 document.getElementById('visualize-button').disabled = false;
+
+// Отключение ползунка
+document.getElementById('input-mattress-bold').disabled = true;

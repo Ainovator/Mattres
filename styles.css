@@ -62,21 +62,86 @@ h1 {
     display: flex; 
 }
 
+.slider {
+    -webkit-appearance: none; /* Убираем стандартный стиль */
+    appearance: None;
+    width: 100%; /* Полная ширина */
+    height: 10px; /* Толщина полоски */
+    background: #2196F3; /* Синий цвет полоски */
+    outline: none; /* Убираем обводку */
+    opacity: 0.7; /* Прозрачность */
+    transition: opacity 0.2s; /* Плавный переход */
+    border-radius: 5px; /* Закругление концов полоски */
+}
+
+/* Стилизация бегунка (кружок ползунка) */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Убираем стандартный стиль */
+    appearance: none;
+    width: 20px; /* Ширина бегунка */
+    height: 20px; /* Высота бегунка */
+    background: #007bff; /* Цвет бегунка */
+    cursor: pointer; /* Указатель */
+    border-radius: 50%; /* Закругление бегунка */
+}
+
+/* Стилизация для Firefox */
+.slider::-moz-range-thumb {
+    width: 20px; /* Ширина бегунка */
+    height: 20px; /* Высота бегунка */
+    background: #007bff; /* Цвет бегунка */
+    cursor: pointer; /* Указатель */
+    border-radius: 50%; /* Закругление бегунка */
+}
+
 .form-group-2 {
-    /* display: flex;
-    justify-content: ce;
-    align-items: flex-start;
- */
+
  display: grid;
  grid-template-columns: 1fr 1fr;
  gap: 10px;
- margin-bottom: 10px;
+ margin-bottom: 20px;
 
 }
 .label-select {
     display: grid;
 
+}
 
+/* Стилизация контейнера для молнии */
+.switch-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.switch-container label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* Стилизация выпадающего списка */
+.form-control-2 {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #333;
+}
+
+/* При фокусе на выпадающем списке */
+.form-control-2:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+
+.label-select-2 {
+    display: grid;
 
 }
 
@@ -142,6 +207,48 @@ h1 {
 .switch-container {
     text-align: center; /* Центрируем текст и переключатели по центру */
 }
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.slider {
+    -webkit-appearance: none; /* Убираем стандартный стиль */
+    appearance: none;
+    width: 100%; /* Полная ширина */
+    height: 10px; /* Толщина полоски */
+    background: #2196F3; /* Синий цвет полоски */
+    outline: none; /* Убираем обводку */
+    opacity: 0.7; /* Прозрачность */
+    transition: opacity 0.2s; /* Плавный переход */
+    border-radius: 5px; /* Закругление концов полоски */
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Убираем стандартный стиль */
+    appearance: none;
+    width: 20px; /* Ширина бегунка */
+    height: 20px; /* Высота бегунка */
+    background: #007bff; /* Цвет бегунка */
+    cursor: pointer; /* Указатель */
+    border-radius: 50%; /* Закругление бегунка */
+}
+
+.slider::-moz-range-thumb {
+    width: 20px; /* Ширина бегунка */
+    height: 20px; /* Высота бегунка */
+    background: #007bff; /* Цвет бегунка */
+    cursor: pointer; /* Указатель */
+    border-radius: 50%; /* Закругление бегунка */
+}
+
 
 .toggle-switch {
     position: relative;

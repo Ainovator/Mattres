@@ -31,19 +31,28 @@
                              <label for="input-bort" class="toggle-switch-label"></label>
                          </div>
                      </div>
+                     <div class="switch-container">
+                        <label for="zipper-select">Молния:</label>
+                        <select id="zipper-select" class="form-control-2" name="zipper">
+                            <option value="0" selected>Выбрать</option>
+                            <option value="bottom">На дне</option>
+                            <option value="side">На борту</option>
+                        </select>
+                    </div>
+                    
                  </div>
             </div>
              <div id="cant-image-container" class="image-container">
-                <img id="cant-image" src="cant+bort.jpg" alt="Кант изображение" class="cant-image">
+                <img id="cant-image" src="/images/cant-bort.jpg" alt="Кант изображение" class="cant-image">
              
                 <div class="form-group">
-                    <label for="input-width">Введите ширину матраса:</label>
+                    <label for="input-width">Введите ширину матраса в миллиметрах:</label>
                     <input type="number" id="input-mattress-width" class="form-control" required inputmode="numeric" pattern="[0-9]*">
                 </div>
                 
-            <div class="form-group">
-                <label for="input-length">Введите длину матраса:</label>
-                <input type="number" id="input-mattress-length" class="form-control" required inputmode="numeric" pattern="[0-9]>
+            <div class="form-group" >
+                <label for="input-length">Введите длину матраса в миллиметрах:</label>
+                <input type="number" id="input-mattress-length" class="form-control" required inputmode="numeric" pattern="[0-9]">
             </div>
             
         
@@ -56,12 +65,6 @@
             <!-- <h2>Список матрасов</h2>
             <div id="mattress-list"></div> -->
 
-
-            <div class="form-group">
-                <label for="input-textile">Выберите ширину ткани (1200 - 1600):</label>
-                <input type="range" id="input-textile-width" class="form-control" min="1200" max="1600" step="100" value="1400">
-                <output id="input-textile-width-output">1400</output>
-            </div>
             <div class="form-group">
                 <label for="input-amount">Введите цену ткани:</label>
                 <input type="number" id="input-textile-cost" class="form-control" required>
@@ -69,7 +72,7 @@
 
             <h2>Слои пены</h2>
             <!-- Первый слой пены -->
-            <div class="form-group-2">
+            <div class="form-group-2" style = "margin-bottom: 25px;">
                 <div class = "label-select">
                     <label for="material-select">Материал:</label>
                     <select id="material-first-layer" class="form-control-2" name="material">
@@ -92,7 +95,7 @@
                 </div>
             </div>
             <!-- Второй слой пены -->
-            <div class="form-group-2">
+            <div class="form-group-2" style = "margin-bottom: 25px;">
                 <div class = "label-select">
                     <label for="material-select">Материал:</label>
                     <select id="material-second-layer" class="form-control-2" name="material">
@@ -115,7 +118,7 @@
                 </div>
             </div>
             <!-- Третий слой пены -->
-            <div class="form-group-2">
+            <div class="form-group-2" >
                 <div class = "label-select">
                     <label for="material-select">Материал:</label>
                     <select id="material-third-layer" class="form-control-2" name="material">
@@ -136,23 +139,39 @@
                         <option value="200">200</option>
                     </select>   
                 </div>
-            </div>     
+            </div>  
+            <div class="form-group">
+                <label for="input-bold" style="margin-top: 20px; display: block;">Толщина матраса:</label>
+                <input type="range" id="input-mattress-bold" class="slider" min="0" max="500" step="50" value="0" disabled>
+                <output id="input-mattress-bold-output">0</output>
+            </div>
+
         </form>
-     
-        <div class="form-group">
-            <label for="input-bold" style="margin-top: 20px; display: block;">Толщина матраса:</label>
-            <input type="range" id="input-mattress-bold" class="form-control" min="0" max="500" step="50" value="0">
-            <output id="input-mattress-bold-output">0</output>
+        <h2>Работы</h2>
+        <div class="form-group" >
+            <label for="input-length">Введите время всех работ в минутах:</label>
+            <input type="number" id="input-full-work" class="form-control" required inputmode="numeric" pattern="[0-9]">
         </div>
+
+
+
+
+       
+        
         <h2>Результаты</h2>
         <div id="results">
             <p id="textile-length"></p>
             <p id="full-textile-cost"></p>
             <p id="cost-foam"></p>
-            <p id="full-cost-mattress" style = "margin-bottom: 50px;"></p>
+            <p id="cost-work" style="margin-bottom: 50px"></p>
+            <p id="full-cost-mattress" ></p>
 
         </div>
-
+        <div class="form-group">
+            <label for="markup-range">Наценка:</label>
+            <input type="range" id="markup-range" class="slider" min="30" max="75" step="5" value="30">
+            <output id="markup-output">30</output>%
+        </div>
       
         
         <div id="visualization">
