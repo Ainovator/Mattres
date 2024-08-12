@@ -221,7 +221,7 @@ function calculate() {
     let BF_Out = bestFit(Input_Textile_Width, details);
 
     // Рассчитываем стоимость слоев
-    if (Input_Mattress_Bold > 200) {
+    if (Input_Mattress_Bold >= 150) {
         Otbortovka = ((Input_Mattress_Length / 1000) * (Input_Mattress_Bold / 1000) * 25 * 2 * 476) +
                      ((Input_Mattress_Width / 1000) * (Input_Mattress_Bold / 1000) * 25 * 2 * 476);
         
