@@ -177,7 +177,9 @@ function updateMattressImage() {
     const zipperSelect = document.getElementById('zipper-select').value;
     const mattressImage = document.getElementById('cant-image');
 
-    if (bortSwitch && cantSwitch && zipperSelect === "side") {
+    if (zipperSelect === "0") { // Проверяем, если выбрано "Выбрать"
+        mattressImage.src = 'images/Main.jpg'; // Изображение по умолчанию
+    } else if (bortSwitch && cantSwitch && zipperSelect === "side") {
         mattressImage.src = 'images/bort+cant-side.jpg';
     } else if (bortSwitch && cantSwitch && zipperSelect === "bottom") {
         mattressImage.src = 'images/bort+cant-bottom.jpg';
@@ -190,11 +192,11 @@ function updateMattressImage() {
     } else if (!bortSwitch && !cantSwitch && zipperSelect === "bottom") {
         mattressImage.src = 'images/no-bort-bottom.jpg';
     } else {
-        mattressImage.src = 'images/only-bort-side.jpg'; // Изображение по умолчанию
+        mattressImage.src = 'images/Main.jpg'; // Изображение по умолчанию
     }
 }
 
-// Привязываем обновление изображения к изменению параметров
+
 document.getElementById('input-cant').addEventListener('change', updateMattressImage);
 document.getElementById('input-bort').addEventListener('change', updateMattressImage);
 document.getElementById('zipper-select').addEventListener('change', updateMattressImage);
