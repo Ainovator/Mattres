@@ -46,16 +46,16 @@
              
                 <div class="form-group">
                     <label for="input-width">Введите ширину матраса в миллиметрах:</label>
-                    <input type="number" id="input-mattress-width" class="form-control" required inputmode="numeric" pattern="[0-9]*">
+                    <input type="number" id="input-mattress-width" min="0" class="form-control" required inputmode="numeric" pattern="^[0-9]*$">
                 </div>
                 
             <div class="form-group" >
                 <label for="input-length">Введите длину матраса в миллиметрах:</label>
-                <input type="number" id="input-mattress-length" class="form-control" required inputmode="numeric" pattern="[0-9]">
+                <input type="number" id="input-mattress-length" min="0" class="form-control" required inputmode="numeric" pattern="^[0-9]*$"">
             </div>
             <div class="form-group">
                 <label for="input-amount">Введите количество матрасов:</label>
-                <input type="number" id="input-mattress-amount" class="form-control" value=1 required>
+                <input type="number" id="input-mattress-amount" min ="0" class="form-control" value=1 required pattern="^[0-9]*$">
             </div>     
             <!-- <button type="button" onclick="addMattress()" class="btn-add" id="add-button" disabled>Добавить</button> -->
             <!-- <h2>Список матрасов</h2>
@@ -63,7 +63,7 @@
 
             <div class="form-group">
                 <label for="input-amount">Введите цену ткани:</label>
-                <input type="number" id="input-textile-cost" class="form-control" required>
+                <input type="number" min="0" id="input-textile-cost" class="form-control" required pattern="^[0-9]*$">
             </div>
 
             <h2>Слои пены</h2>
@@ -147,7 +147,7 @@
         <h2>Работы</h2>
         <div class="form-group" >
             <label for="input-length">Введите время всех работ в минутах:</label>
-            <input type="number" id="input-full-work" class="form-control" required inputmode="numeric" pattern="[0-9]">
+            <input type="number" id="input-full-work" min="0" class="form-control" required inputmode="numeric" pattern="[0-9]">
         </div>
 
         

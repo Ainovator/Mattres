@@ -53,7 +53,7 @@ document.getElementById('input-mattress-width').addEventListener('blur', () => {
             document.getElementById('input-mattress-width').value = Input_Mattress_Width;
             document.getElementById('input-mattress-length').value = Input_Mattress_Length;
         }
-
+        preventNegativeSign(event)
         calculate();
 }});
 //Динамическое отслеживание цены ткани
@@ -461,5 +461,46 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 //<Декоративный блок>
+
+
+function preventNegativeSign(event) {
+    if (event.key === "-") {
+        event.preventDefault(); // Запрещаем ввод символа "-"
+    }
+}
+
+
+
+// Функция для предотвращения ввода отрицательного знака "-"
+function preventNegativeSign(event) {
+    if (event.key === "-") {
+        event.preventDefault(); // Запрещаем ввод символа "-"
+    }
+}
+
+// Применение функции ко всем нужным полям ввода
+const inputs = [
+    'input-mattress-width',
+    'input-mattress-length',
+    'input-mattress-bold',
+    'input-mattress-amount',
+    'input-textile-cost',
+    'input-full-work'
+];
+
+inputs.forEach(id => {
+    const inputElement = document.getElementById(id);
+
+    // Запрещаем ввод знака "-"
+    inputElement.addEventListener('keydown', preventNegativeSign);
+
+    // Предотвращаем установку отрицательных значений при изменении
+    inputElement.addEventListener('input', () => {
+        const value = parseInt(inputElement.value) || 0;
+        if (value < 0) {
+            inputElement.value = 0; // Сбрасываем значение на 0, если введено отрицательное число
+        }
+    });
+});
 
 
