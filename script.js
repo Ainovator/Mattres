@@ -239,7 +239,7 @@ function calculate() {
     let Full_Cost_First_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_First_Layer/1000)*(Material_First_Layer)*Cost_First_Layer;
     let Full_Cost_Second_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Second_Layer/1000)*(Material_Second_Layer)*Cost_Second_Layer;
     let Full_Cost_Third_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Third_Layer/1000)*(Material_Third_Layer)*Cost_Third_Layer;
-    let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*1000)/1000;
+    let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*Input_Mattress_Amount*1000)/1000;
     let Full_Work_Cost = Math.round(((Input_Full_Work*9)/1000)*1000);
     //Расчёт стоимости ткани
     let Full_Textile_Cost = Math.round((Input_Textile_Cost * (BF_Out.rollLength/1000)*1000)/1000);
@@ -248,8 +248,8 @@ function calculate() {
 
 
     // Выводим результат на фронт
-    document.getElementById('textile-length').textContent = `Длина отреза: ${BF_Out.rollLength} мм`;
-    document.getElementById('full-textile-cost').textContent = `Цена отреза: ${Full_Textile_Cost} ₽`; // Убедитесь, что этот элемент существует на странице
+    document.getElementById('textile-length').textContent = `Длина отреза ткани: ${BF_Out.rollLength} мм`;
+    document.getElementById('full-textile-cost').textContent = `Цена отреза ткани: ${Full_Textile_Cost} ₽`; // Убедитесь, что этот элемент существует на странице
     document.getElementById('cost-foam').textContent = `Цена пены: ${Full_Cost_Foam} ₽`; // Убедитесь, что этот элемент существует на странице
     document.getElementById('cost-work').textContent = `Цена работ: ${Full_Work_Cost} ₽`; // Убедитесь, что этот элемент существует на странице
     document.getElementById('full-cost-mattress').textContent = `Цена изделия: ${Full_Cost_Mattress} ₽`; // Убедитесь, что этот элемент существует на странице
