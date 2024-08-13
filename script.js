@@ -23,13 +23,15 @@ let Cost_Third_Layer = 0;
 let ScaleUp = 20;
 let Otbortovka = 0;
 const Cost_Foam = {
-    ST2236: 466,
-    ST3040: 466,
-    EL4065: 476,
-    HR3030: 540,
-    HR3020: 560,
-    VE3508: 535,
-    NP2300: 318,
+    LL5020: 679,
+    HR3535: 682, 
+    ST2236: 572,
+    ST3040: 572,
+    EL4065: 648,
+    HR3030: 682,
+    HR3020: 682,
+    VE3508: 644,
+    NP2300: 378,
 };
 // #endregion
 document.getElementById('input-cant').addEventListener('change', updateMattressImage);
@@ -44,68 +46,55 @@ calculate()
 document.getElementById('comfort-select').addEventListener('input', () => {
     ComfortSelect = document.getElementById('comfort-select').value || 0;
     calculate();
-    updateMattressBold()
     UpdateLayersSelect()
+    updateMattressBold()
+    
 });
 
 function UpdateLayersSelect() {
-    if (ComfortSelect === "standart-50") {
-        document.getElementById("material-first-layer").value = "ST3040";
-        Material_First_Layer = parseInt(document.querySelector('#material-first-layer option:checked').textContent.trim().slice(2, 4)) || 0;
-        Cost_First_Layer = Cost_Foam[document.querySelector('#material-first-layer option:checked').textContent.trim()] || 0;
-        document.getElementById("bold-first-layer").value = "50";
-        Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
-        
-        }
-    else if (ComfortSelect === "standart-100"){
-        document.getElementById("material-first-layer").value = "ST3040";
-        Material_First_Layer = parseInt(document.querySelector('#material-first-layer option:checked').textContent.trim().slice(2, 4)) || 0;
-        Cost_First_Layer = Cost_Foam[document.querySelector('#material-first-layer option:checked').textContent.trim()] || 0;
-        document.getElementById("bold-first-layer").value = "100";
-        Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
-        }
-    else if (ComfortSelect === "standart-150"){
-        document.getElementById("material-first-layer").value = "ST2236";
-        Material_First_Layer = parseInt(document.querySelector('#material-first-layer option:checked').textContent.trim().slice(2, 4)) || 0;
-        Cost_First_Layer = Cost_Foam[document.querySelector('#material-first-layer option:checked').textContent.trim()] || 0;
-        document.getElementById("bold-first-layer").value = "100";
-        Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
+    switch (ComfortSelect) {
+        case "standart-50":
+            updateLayers("ST3040", "50", 0, 0 ,0 ,0);
+            break;
 
-        document.getElementById("material-second-layer").value = "ST3040";
-        Material_First_Layer = parseInt(document.querySelector('#material-second-layer option:checked').textContent.trim().slice(2, 4)) || 0;
-        Cost_First_Layer = Cost_Foam[document.querySelector('#material-second-layer option:checked').textContent.trim()] || 0;
-        document.getElementById("bold-second-layer").value = "50";
-        Bold_First_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
-        }
-    else if (ComfortSelect === "comfort-50"){
-        }
-    else if (ComfortSelect === "comfort-100"){
-        document.getElementById("material-first-layer").value = "EL4065";
-        Material_First_Layer = parseInt(document.querySelector('#material-first-layer option:checked').textContent.trim().slice(2, 4)) || 0;
-        Cost_First_Layer = Cost_Foam[document.querySelector('#material-first-layer option:checked').textContent.trim()] || 0;
-        document.getElementById("bold-first-layer").value = "50";
-        Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
-        document.getElementById("material-second-layer").value = "HR3030";
-        Material_First_Layer = parseInt(document.querySelector('#material-second-layer option:checked').textContent.trim().slice(2, 4)) || 0;
-        Cost_First_Layer = Cost_Foam[document.querySelector('#material-second-layer option:checked').textContent.trim()] || 0;
-        document.getElementById("bold-second-layer").value = "50";
-        Bold_First_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
-        }  
-    else if (ComfortSelect === "comfort-150"){
-        document.getElementById("material-first-layer").value = "EL4065";
-        Material_First_Layer = parseInt(document.querySelector('#material-first-layer option:checked').textContent.trim().slice(2, 4)) || 0;
-        Cost_First_Layer = Cost_Foam[document.querySelector('#material-first-layer option:checked').textContent.trim()] || 0;
-        document.getElementById("bold-first-layer").value = "50";
-        Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
-        document.getElementById("material-second-layer").value = "HR3030";
-        Material_First_Layer = parseInt(document.querySelector('#material-second-layer option:checked').textContent.trim().slice(2, 4)) || 0;
-        Cost_First_Layer = Cost_Foam[document.querySelector('#material-second-layer option:checked').textContent.trim()] || 0;
-        document.getElementById("bold-second-layer").value = "100";
-        Bold_First_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
-        }   
- 
-        
-        updateMattressBold()
+        case "standart-100":
+            updateLayers("ST3040", "100", 0, 0 ,0 ,0);
+            break;
+
+        case "standart-150":
+            updateLayers("ST3040", "50", "ST2236", 100 ,0 ,0);
+            break;
+
+        case "comfort-50":
+            updateLayers(0, 0, 0, 0, 0, 0);
+            break;
+
+        case "comfort-100":
+            updateLayers("HR3030", "50", "EL4065", "50", 0, 0);
+            break;
+
+        case "comfort-150":
+            updateLayers("HR3030", "100", "EL4065", "50", 0, 0);
+            break;
+
+        case "premial-50":
+            updateLayers("HR3535", "50", 0, 0, 0, 0);
+            break;
+
+        case "premial-100":
+            updateLayers("LL5020", "50", "HR3535", "50", 0, 0);
+            break;
+
+        case "premial-150":
+            updateLayers("VE3508", "50", "HR3535", "100", 0, 0);
+            break;
+
+        default:
+            updateLayers(0, 0, 0, 0 ,0 ,0);
+            break;
+    }
+
+    updateMattressBold();
 }
 
 // #region Динмаечские отслеживания
@@ -301,6 +290,26 @@ function updateMattressImage() {
     // console.log('Изображение обновлено:', mattressImage.src);
 }
 
+function updateLayers(mt_1, bd_1, mt_2, bd_2, mt_3, bd_3){
+    document.getElementById("material-first-layer").value = mt_1;
+    Material_First_Layer = parseInt(document.querySelector('#material-first-layer option:checked').textContent.trim().slice(2, 4)) || 0;
+    Cost_First_Layer = Cost_Foam[document.querySelector('#material-first-layer option:checked').textContent.trim()] || 0;
+    document.getElementById("bold-first-layer").value = bd_1;
+    Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
+
+    document.getElementById("material-second-layer").value = mt_2;
+    Material_Second_Layer = parseInt(document.querySelector('#material-second-layer option:checked').textContent.trim().slice(2, 4)) || 0;
+    Cost_Second_Layer = Cost_Foam[document.querySelector('#material-second-layer option:checked').textContent.trim()] || 0;
+    document.getElementById("bold-second-layer").value = bd_2;
+    Bold_Second_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
+
+    document.getElementById("material-third-layer").value = mt_3;
+    Material_Second_Layer = parseInt(document.querySelector('#material-third-layer option:checked').textContent.trim().slice(2, 4)) || 0;
+    Cost_Second_Layer = Cost_Foam[document.querySelector('#material-third-layer option:checked').textContent.trim()] || 0;
+    document.getElementById("bold-third-layer").value = bd_3;
+    Bold_Second_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
+ 
+}
 // Функция расчета всех значений и вывод на фронт
 function calculate() {
 
