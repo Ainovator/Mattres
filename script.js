@@ -55,6 +55,7 @@ function UpdateLayersSelect() {
         Cost_First_Layer = Cost_Foam[document.querySelector('#material-first-layer option:checked').textContent.trim()] || 0;
         document.getElementById("bold-first-layer").value = "50";
         Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
+        
         }
     else if (ComfortSelect === "standart-100"){
         document.getElementById("material-first-layer").value = "ST3040";
@@ -102,7 +103,9 @@ function UpdateLayersSelect() {
         document.getElementById("bold-second-layer").value = "100";
         Bold_First_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
         }   
-    
+ 
+        
+        updateMattressBold()
 }
 
 // #region Динмаечские отслеживания
