@@ -213,12 +213,14 @@ document.getElementById('input-bort').addEventListener('change', function() {
 document.getElementById('material-first-layer').addEventListener('input', () => {
     Material_First_Layer = parseInt(document.querySelector('#material-first-layer option:checked').textContent.trim().slice(2, 4)) || 0;
     Cost_First_Layer = Cost_Foam[document.querySelector('#material-first-layer option:checked').textContent.trim()] || 0;
+    document.getElementById("comfort-select").value = 0;
     calculate();
 });
 
 
 document.getElementById('bold-first-layer').addEventListener('input', () => {
     Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
+    document.getElementById("comfort-select").value = 0;
     calculate();
     updateMattressBold()
 });
@@ -227,12 +229,14 @@ document.getElementById('material-second-layer').addEventListener('input', () =>
     Material_Second_Layer = parseInt(document.querySelector('#material-second-layer option:checked').textContent.trim().slice(2, 4)) || 0;
     console.log(Material_Second_Layer)
     Cost_Second_Layer = Cost_Foam[document.querySelector('#material-second-layer option:checked').textContent.trim()] || 0;
+    document.getElementById("comfort-select").value = 0;
     console.log(Cost_Second_Layer)
     calculate();
 });
 
 document.getElementById('bold-second-layer').addEventListener('input', () => {
     Bold_Second_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
+    document.getElementById("comfort-select").value = 0;
     calculate();
     updateMattressBold()
 });
@@ -240,11 +244,13 @@ document.getElementById('bold-second-layer').addEventListener('input', () => {
 document.getElementById('material-third-layer').addEventListener('input', () => {
     Material_Third_Layer = parseInt(document.querySelector('#material-third-layer option:checked').textContent.trim().slice(2, 4)) || 0;
     Cost_Third_Layer = Cost_Foam[document.querySelector('#material-third-layer option:checked').textContent.trim()] || 0;
+    document.getElementById("comfort-select").value = 0;
     calculate();
 });
 
 document.getElementById('bold-third-layer').addEventListener('input', () => {
     Bold_Third_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
+    document.getElementById("comfort-select").value = 0;
     calculate();
     updateMattressBold()
 });
@@ -318,7 +324,7 @@ function calculate() {
     let BF_Out = bestFit(Input_Textile_Width, details);
 
     // Рассчитываем стоимость слоев
-    if (Input_Mattress_Bold >= 150) {
+    if (Input_Mattress_Bold >= 200) {
         Otbortovka = ((Input_Mattress_Length / 1000) * (Input_Mattress_Bold / 1000) * 0.05 * 25 * 2 * 476) +
                      ((Input_Mattress_Width / 1000) * (Input_Mattress_Bold / 1000) * 0.05 * 25 * 2 * 476);
         
