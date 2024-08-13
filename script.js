@@ -307,7 +307,7 @@ function updateLayers(mt_1, bd_1, mt_2, bd_2, mt_3, bd_3){
     Material_Second_Layer = parseInt(document.querySelector('#material-third-layer option:checked').textContent.trim().slice(2, 4)) || 0;
     Cost_Second_Layer = Cost_Foam[document.querySelector('#material-third-layer option:checked').textContent.trim()] || 0;
     document.getElementById("bold-third-layer").value = bd_3;
-    Bold_Second_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
+    Bold_Third_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
  
 }
 // Функция расчета всех значений и вывод на фронт
