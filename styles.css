@@ -10,9 +10,6 @@ body {
     color: #333;
 }
 
-
-
-
 .image-container {
     text-align: center; /* Центрируем изображение */
     margin-top: 10px;
@@ -25,24 +22,25 @@ body {
     margin-bottom: 25px;
 }
 
-
+/* Кнопки результатов с белым фоном и красным текстом */
 #results p {
-    background-color: #007bff; /* Цвет фона кнопки */
-    color: white;              /* Цвет текста */
-    padding: 10px 20px;        /* Внутренние отступы */
-    border-radius: 5px;        /* Скругление углов */
-    display: block;            /* Блочный элемент, чтобы кнопки располагались одна под другой */
-    width: calc(100% - 40px);  /* Занимает всю ширину контейнера с учётом padding */
-    margin-bottom: 10px;       /* Отступ снизу между кнопками */
-    text-align: center;        /* Центрируем текст */
-    cursor: pointer;           /* Указатель при наведении */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Лёгкая тень */
-    transition: background-color 0.3s ease;  /* Плавный переход цвета */
+    background-color: #ff0000; /* Белый фон */
+    color: white;            /* Красный текст */
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 1px black;
+    display: block;
+    width: calc(100% - 40px);
+    margin-bottom: 10px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
 }
 
-/* Эффект при наведении на кнопку */
+/* Эффект при наведении на кнопку результатов */
 #results p:hover {
-    background-color: #0056b3; /* Изменение цвета при наведении */
+    background-color: #f0f0f0; /* Светло-серый фон при наведении */
 }
 
 .container {
@@ -61,16 +59,17 @@ h1 {
     margin-bottom: 20px;
     color: #333;
 }
-.switch-block{
+
+.switch-block {
     display: flex; 
 }
 
 .slider {
     -webkit-appearance: none; /* Убираем стандартный стиль */
-    appearance: None;
+    appearance: none;
     width: 100%; /* Полная ширина */
     height: 10px; /* Толщина полоски */
-    background: #2196F3; /* Синий цвет полоски */
+    background: black; /* Красный цвет полоски */
     outline: none; /* Убираем обводку */
     opacity: 0.7; /* Прозрачность */
     transition: opacity 0.2s; /* Плавный переход */
@@ -83,7 +82,7 @@ h1 {
     appearance: none;
     width: 20px; /* Ширина бегунка */
     height: 20px; /* Высота бегунка */
-    background: #007bff; /* Цвет бегунка */
+    background: black; /* Красный цвет бегунка */
     cursor: pointer; /* Указатель */
     border-radius: 50%; /* Закругление бегунка */
 }
@@ -92,99 +91,15 @@ h1 {
 .slider::-moz-range-thumb {
     width: 20px; /* Ширина бегунка */
     height: 20px; /* Высота бегунка */
-    background: #007bff; /* Цвет бегунка */
+    background: #ff0000; /* Красный цвет бегунка */
     cursor: pointer; /* Указатель */
     border-radius: 50%; /* Закругление бегунка */
-}
-
-.form-group-2 {
-
- display: grid;
- grid-template-columns: 1fr 1fr;
- gap: 10px;
- margin-bottom: 20px;
-
-}
-.label-select {
-    display: grid;
-
-}
-
-/* Стилизация контейнера для молнии */
-.switch-container {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.switch-container label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-/* Стилизация выпадающего списка */
-.form-control-2 {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-    box-sizing: border-box;
-    background-color: #fff;
-    color: #333;
-}
-
-/* При фокусе на выпадающем списке */
-.form-control-2:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-
-.label-select-2 {
-    display: grid;
-
-}
-
-.form-column {
-    flex: 1;
-    margin-right: 10px; /* Отступ между колонками */
-}
-
-.form-column:last-child {
-    margin-right: 0; /* Убираем отступ у последней колонки */
-}
-
-.form-control-2 {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-    box-sizing: border-box;
-}
-
-
-
-.form-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-
-.form-group label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 5px;
-    color: #333;
 }
 
 .form-control {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #ff0000; /* Красная окантовка */
     border-radius: 5px;
     font-size: 1em;
     background-color: #fff;
@@ -192,114 +107,12 @@ h1 {
 }
 
 .form-control:focus {
-    border-color: #007bff;
+    border-color: #ff0000; /* Красная окантовка при фокусе */
     outline: none;
-}
-.form-control-2:focus {
-    border-color: #007bff;
-    outline: none;
-}
-.switch-block {
-    display: flex;
-    justify-content: center; /* Центрируем переключатели по горизонтали */
-    align-items: center; /* Центрируем текст по вертикали */
-    gap: 50px; /* Отступ между переключателями */
-}
-
-
-.switch-container {
-    text-align: center; /* Центрируем текст и переключатели по центру */
-}
-.form-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.form-group label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.slider {
-    -webkit-appearance: none; /* Убираем стандартный стиль */
-    appearance: none;
-    width: 100%; /* Полная ширина */
-    height: 10px; /* Толщина полоски */
-    background: #2196F3; /* Синий цвет полоски */
-    outline: none; /* Убираем обводку */
-    opacity: 0.7; /* Прозрачность */
-    transition: opacity 0.2s; /* Плавный переход */
-    border-radius: 5px; /* Закругление концов полоски */
-}
-
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Убираем стандартный стиль */
-    appearance: none;
-    width: 20px; /* Ширина бегунка */
-    height: 20px; /* Высота бегунка */
-    background: #007bff; /* Цвет бегунка */
-    cursor: pointer; /* Указатель */
-    border-radius: 50%; /* Закругление бегунка */
-}
-
-.slider::-moz-range-thumb {
-    width: 20px; /* Ширина бегунка */
-    height: 20px; /* Высота бегунка */
-    background: #007bff; /* Цвет бегунка */
-    cursor: pointer; /* Указатель */
-    border-radius: 50%; /* Закругление бегунка */
-}
-
-
-.toggle-switch {
-    position: relative;
-    width: 60px;
-    display: inline-block;
-    text-align: left;
-}
-
-.toggle-switch-checkbox {
-    display: none;
-    margin-left: 20px;
-}
-
-.toggle-switch-label {
-    display: block;
-    overflow: hidden;
-    cursor: pointer;
-    height: 24px;
-    padding: 0;
-    line-height: 24px;
-    border: 2px solid #ddd;
-    border-radius: 12px;
-    background-color: #ddd;
-    transition: background-color 0.3s ease-in;
-    
-}
-
-.toggle-switch-label:before {
-    content: '';
-    display: block;
-    width: 20px;
-    height: 20px;
-    margin: 2px;
-    background: white;
-    border-radius: 50%;
-    transition: margin 0.3s ease-in;
-}
-
-.toggle-switch-checkbox:checked + .toggle-switch-label {
-    background-color: #007bff;
-}
-
-.toggle-switch-checkbox:checked + .toggle-switch-label:before {
-    margin-left: 36px;
 }
 
 .btn {
-    background-color: #007bff;
+    background-color: #ff0000; /* Красная кнопка */
     color: white;
     padding: 10px 20px;
     border: none;
@@ -308,61 +121,40 @@ h1 {
     cursor: pointer;
     transition: background-color 0.3s;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
     margin-bottom: 100px;
 }
 
-.btn-add {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.btn:hover:enabled {
+    background-color: #cc0000; /* Темно-красная кнопка при наведении */
 }
 
-
-.btn-vis {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+#results p:hover {
+    background-color: #cc0000; /* Темно-красный фон при наведении */
 }
-.btn-value {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.2em;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
 
 .btn:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
 }
+.btn-add {
+    background-color: #ff0000;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
 .btn-add:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
 }
 
-.btn:hover:enabled {
-    background-color: #0056b3;
-}
 .btn-add:hover:enabled {
-    background-color: #0056b3;
+    background-color: #cc0000; /* Темно-красная кнопка при наведении */
 }
 
 h2 {
@@ -382,7 +174,7 @@ h2 {
 }
 
 #mattress-list p {
-    background-color: #007bff;
+    background-color: #ff0000;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -398,7 +190,7 @@ h2 {
 }
 
 #mattress-list p:hover {
-    background-color: #0056b3;
+    background-color: #cc0000;
 }
 
 .delete-btn {
@@ -447,7 +239,6 @@ h2 {
     color: #ffffff !important;
 }
 
-
 /* Изменение фона для критических уведомлений */
 .toast-critical {
     background-color: #dc3545 !important; /* Красный фон */
@@ -470,4 +261,148 @@ h2 {
 /* Изменение стиля кнопки закрытия */
 .toast-close-button {
     color: #ffffff !important;
+}
+
+/* Общие стили для форм */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-control-2 {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ff0000; /* Красная окантовка */
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #333;
+}
+
+.zipper {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid black; /* Красная окантовка */
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #333;
+}
+
+.form-control-2:focus {
+    border-color: #ff0000; /* Красная окантовка при фокусе */
+    outline: none;
+}
+
+.label-select {
+    display: grid;
+}
+
+.form-group-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.label-select-2 {
+    display: grid;
+}
+
+.form-column {
+    flex: 1;
+    margin-right: 10px; /* Отступ между колонками */
+}
+
+.form-column:last-child {
+    margin-right: 0; /* Убираем отступ у последней колонки */
+}
+
+/* Стилизация контейнера для молнии */
+.switch-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.switch-container label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.switch-block {
+    display: flex;
+    justify-content: center; /* Центрируем переключатели по горизонтали */
+    align-items: center; /* Центрируем текст по вертикали */
+    gap: 50px; /* Отступ между переключателями */
+}
+
+.switch-container-2 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.switch-container-2 label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+
+
+.toggle-switch {
+    position: relative;
+    width: 60px;
+    display: inline-block;
+    text-align: left;
+}
+
+.toggle-switch-checkbox {
+    display: none;
+    margin-left: 20px;
+}
+
+.toggle-switch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    height: 24px;
+    padding: 0;
+    line-height: 24px;
+    border: None;
+    border-radius: 12px;
+    background-color: #ddd;
+    transition: background-color 0.3s ease-in;
+}
+
+.toggle-switch-label:before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+    background: white;
+    border-radius: 50%;
+    transition: margin 0.3s ease-in;
+}
+
+.toggle-switch-checkbox:checked + .toggle-switch-label {
+    background-color: #ff0000;
+}
+
+.toggle-switch-checkbox:checked + .toggle-switch-label:before {
+    margin-left: 36px;
 }

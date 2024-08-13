@@ -44,7 +44,7 @@
                      </div>
                      <div class="switch-container">
                         <label for="zipper-select">Молния:</label>
-                        <select id="zipper-select" class="form-control-2" name="zipper">
+                        <select id="zipper-select" class="zipper" name="zipper">
                             <option value="0" selected>Выбрать</option>
                             <option value="bottom">На дне</option>
                             <option value="side">На борту</option>
@@ -54,7 +54,7 @@
             </div>
             <div id="cant-image-container" class="image-container">
                 <img id="cant-image" src="images/Main.jpg" alt="Кант изображение" class="cant-image">
-             
+                <h2>Размеры</h2>
                 <div class="form-group">
                     <label for="input-width">Введите ширину матраса в миллиметрах:</label>
                     <input type="number" id="input-mattress-width" min="0" class="form-control" required inputmode="numeric" pattern="^[0-9]*$">
@@ -78,8 +78,8 @@
             </div>
 
             <h2>Слои пены</h2>
-            <div class="switch-container">
-                <label for="comfot-select">Комфортность:</label>
+            <div class="switch-container-2">
+                <label for="comfot-select">Комфортность</label>
                 <select id="comfort-select" class="form-control-2" name="zipper">
                     <option value="0" selected>Выбрать</option>
                     <option value="standart-50">Стандарт 50</option>
@@ -211,7 +211,7 @@
       
         
         <div id="visualization">
-        <button type="button" onclick="visualize()" class="btn-vis" id="visualize-button" disabled>Визуализировать</button>
+        <button type="button" onclick="visualize()" class="btn" id="visualize-button" disabled>Визуализировать</button>
             <h2>Визуализация</h2>
             <canvas id="canvas"></canvas>
         </div>
