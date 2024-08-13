@@ -1,4 +1,3 @@
-//<Блок первоначального получения переменных>
 let Input_Mattress_Width = parseInt(document.getElementById('input-mattress-width').value) || 0;
 let Input_Mattress_Length = parseInt(document.getElementById('input-mattress-length').value) || 0;
 let Input_Mattress_Bold = parseInt(document.getElementById('input-mattress-bold').value) || 0;
@@ -203,6 +202,8 @@ function updateMattressImage() {
     const zipperSelect = document.getElementById('zipper-select').value;
     const mattressImage = document.getElementById('cant-image');
 
+    console.log('Кант:', cantSwitch, 'Борт:', bortSwitch, 'Молния:', zipperSelect);
+
     if (zipperSelect === "0") { // Проверяем, если выбрано "Выбрать"
         mattressImage.src = 'images/Main.jpg'; // Изображение по умолчанию
     } else if (bortSwitch && cantSwitch && zipperSelect === "side") {
@@ -220,7 +221,10 @@ function updateMattressImage() {
     } else {
         mattressImage.src = 'images/Main.jpg'; // Изображение по умолчанию
     }
+    
+    console.log('Изображение обновлено:', mattressImage.src);
 }
+
 // Функция расчета всех значений и вывод на фронт
 function calculate() {
 
@@ -285,11 +289,12 @@ function countDetails() {
             details.push([Input_Mattress_Width + ScaleUp*2, Input_Mattress_Length + ScaleUp*2]);
 
         }
-    } else if (Input_Mattress_Width > Input_Textile_Width && Input_Bort_Value === 0)  {
+    } else if (Input_Mattress_Width > Input_Textile_Width && Input_Bort_Value == 0)  {
         for (let i = 0; i < Input_Mattress_Amount; i++) {
-            details.push([(Input_Mattress_Width/2+Input_Mattress_Bold*2) + ScaleUp*2, (Input_Mattress_Length + Input_Mattress_Bold*2) + ScaleUp*2]);
-            details.push([(Input_Mattress_Width/2+Input_Mattress_Bold*2) + ScaleUp*2, (Input_Mattress_Length + Input_Mattress_Bold*2) + ScaleUp*2]);
-            details.push([Input_Mattress_Width + ScaleUp*2, Input_Mattress_Length + ScaleUp*2]);
+            details.push([(Input_Mattress_Width/2+Input_Mattress_Bold) + ScaleUp*2, (Input_Mattress_Length + Input_Mattress_Bold*2) + ScaleUp*2]);
+            details.push([(Input_Mattress_Width/2+Input_Mattress_Bold) + ScaleUp*2, (Input_Mattress_Length + Input_Mattress_Bold*2) + ScaleUp*2]);
+            details.push([Input_Mattress_Width/2 + ScaleUp*2, Input_Mattress_Length + ScaleUp*2]);
+            details.push([Input_Mattress_Width/2 + ScaleUp*2, Input_Mattress_Length + ScaleUp*2]);
 
         }
     }
@@ -483,15 +488,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 //<Декоративный блок>
-
-
-function preventNegativeSign(event) {
-    if (event.key === "-") {
-        event.preventDefault(); // Запрещаем ввод символа "-"
-    }
-}
-
-
 
 // Функция для предотвращения ввода отрицательного знака "-"
 function preventNegativeSign(event) {
