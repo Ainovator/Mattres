@@ -89,6 +89,18 @@ function UpdateLayersSelect() {
         Cost_First_Layer = Cost_Foam[document.querySelector('#material-second-layer option:checked').textContent.trim()] || 0;
         document.getElementById("bold-second-layer").value = "50";
         Bold_First_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
+        }  
+    else if (ComfortSelect === "comfort-150"){
+        document.getElementById("material-first-layer").value = "EL4065";
+        Material_First_Layer = parseInt(document.querySelector('#material-first-layer option:checked').textContent.trim().slice(2, 4)) || 0;
+        Cost_First_Layer = Cost_Foam[document.querySelector('#material-first-layer option:checked').textContent.trim()] || 0;
+        document.getElementById("bold-first-layer").value = "50";
+        Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
+        document.getElementById("material-second-layer").value = "HR3030";
+        Material_First_Layer = parseInt(document.querySelector('#material-second-layer option:checked').textContent.trim().slice(2, 4)) || 0;
+        Cost_First_Layer = Cost_Foam[document.querySelector('#material-second-layer option:checked').textContent.trim()] || 0;
+        document.getElementById("bold-second-layer").value = "100";
+        Bold_First_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
         }   
     
 }
