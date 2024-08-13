@@ -10,6 +10,9 @@ body {
     color: #333;
 }
 
+
+
+
 .image-container {
     text-align: center; /* Центрируем изображение */
     margin-top: 10px;
@@ -418,4 +421,53 @@ h2 {
 #canvas {
     width: 100%;
     border: 1px solid #000;
+}
+
+/* Изменение фона для уведомлений */
+.toast-warning {
+    background-color: #ffc107 !important; /* Желтый фон */
+    color: #ffffff !important; /* Белый цвет текста */
+}
+
+/* Изменение иконки на треугольник с вопросом */
+.toast-warning .toast-icon {
+    display: inline-block;
+    background-color: transparent !important;
+    margin-right: 10px;
+    width: 24px;
+    height: 24px;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij4KICA8cGF0aCBkPSJNMTIgMmMtNC45MTggMC05IDQuMDgyLTkgOHM0LjA4MiA5IDkgOXM5LTQuMDgyIDktOVMxNi45MTggMiAxMiAyaDB6bTEgMTRaYy0uNTUyIDAtMS0uNDQ4LTEtMXYtMGMwLS41NTIuNDQ4LTEgMS0xaDBjLjU1MiAwIDEgLjQ0OCAxIDF2MGMwIC41NTItLjQ0OCAxLTEgMXptMC02Yy0uNTUyIDAtMS0uNDQ4LTEtMXYtNGMwLS41NTIuNDQ4LTEgMS0xaDBjLjU1MiAwIDEgLjQ0OCAxIDF2NGMwIC41NTItLjQ0OCAxLTEgMXoiLz4KPC9zdmc+Cg==') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    vertical-align: middle;
+}
+
+/* Изменение стиля кнопки закрытия */
+.toast-close-button {
+    color: #ffffff !important;
+}
+
+
+/* Изменение фона для критических уведомлений */
+.toast-critical {
+    background-color: #dc3545 !important; /* Красный фон */
+    color: #ffffff !important; /* Белый цвет текста */
+}
+
+/* Изменение иконки на крестик */
+.toast-critical .toast-icon {
+    display: inline-block;
+    background-color: transparent !important;
+    margin-right: 10px;
+    width: 24px;
+    height: 24px;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEuNDE0MTUsMS40MTQxNUMxLjgzNDc1LDEuMDEzMjEgMi41NDUyOCwxLjAxMzIxIDIuOTY0NTcsMS40MTQxNUw4LDEuNjY5MjNMMTMuMDM1NCwxLjQxNDE1QzEzLjQ1NTgsMS4wMTMyMSAxNC4xNjU1LDEuMDEzMjEgMTQuNTg1OSwxLjQxNDE1QzE1LjAwNjIsMS44MTU1OSAxNS4wMDYyLDIuNTIyNzMgMTQuNTg1OSwyLjkzMjcxTDkuNTUwMjksOC4wMjE0OEwxNC41ODU5LDEzLjA2NzdDMTUuMDA2MiwxMy40NzY3IDE1LjAwNjIsMTQuMTg3MyAxNC41ODU5LDE0LjU5MzdDMTQuMTY1NSwxNC45OTQxIDEzLjQ1NTgsMTQuOTk0MSAxMy4wMzU0LDE0LjU5MzdMOCwxMS4zNDQ5TDIuOTY0NTcsMTQuNTkzN0MyLjU0NTI4LDE0Ljk5NDEgMS44MzQ3NSwxNC45OTQxIDEuNDE0MTUsMTQuNTkzN0MxLjAwMzY1LDE0LjE4NzMgMS4wMDM2NSwxMy40NzY3IDEuNDE0MTUsMTMuMDY3N0w2LjQ1OTc2LDguMDIxNDhMMi4wNjAzMiwyLjkzMjcxQzEuNjQwNzEsMi41MjI3MyAxLjY0MDcxLDEuODE1NTkgMi4wNjAzMiwxLjQxNDE1WiIgZmlsbD0iI0ZGRkZGRiIvPgo8L3N2Zz4K') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    vertical-align: middle;
+}
+
+/* Изменение стиля кнопки закрытия */
+.toast-close-button {
+    color: #ffffff !important;
 }
