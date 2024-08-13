@@ -93,22 +93,30 @@ document.getElementById('input-mattress-amount').addEventListener('input', () =>
 });
 //Динамическое отслеживание наличия канта
 document.getElementById('input-cant').addEventListener('change', function() {
-    const cantImage = document.getElementById('cant-image');
     const bortSwitch = document.getElementById('input-bort');
+    const zipperSelect = document.getElementById('zipper-select');
+    const zipperOptionSide = zipperSelect.querySelector('option[value="side"]');
 
     if (this.checked) {
         // Если "Кант" включен, включаем и "Борт"
         Input_Cant_Value = 1; 
         Input_Bort_Value = 1; 
         ScaleUp = 50;
-        bortSwitch.checked = true; // Обновляем состояние переключателя "Борт"
+        bortSwitch.checked = true; // Включаем переключатель "Борт"
+        zipperOptionSide.disabled = false; // Разблокируем опцию "Молния на борту"
     } else {
-        // Если "Кант" выключен, но "Борт" включен
+        // Если "Кант" выключен
         Input_Cant_Value = 0;
+        Input_Bort_Value = 0;
         ScaleUp = 20;
+
+        if (zipperSelect.value === "side") {
+            zipperSelect.value = "0"; // Сбрасываем выбор, если была выбрана "Молния на борту"
+        }
     }
+
     calculate();
-    updateMattressImage()
+    updateMattressImage();
 });
 // Динамическое отслеживание наличия борта
 document.getElementById('input-bort').addEventListener('change', function() {
@@ -258,20 +266,34 @@ function calculate() {
 function countDetails() {
     let details = [];
     
-    if (Input_Mattress_Width < Input_Textile_Width) {
+    if (Input_Mattress_Width < Input_Textile_Width && Input_Bort_Value === 1) {
         for (let i = 0; i < Input_Mattress_Amount * 2; i++) {
-            details.push([Input_Mattress_Width + ScaleUp*2, Input_Mattress_Length + ScaleUp]);
-            details.push([Input_Mattress_Width + ScaleUp*2, Input_Mattress_Bold + ScaleUp]);
-            details.push([Input_Mattress_Bold + ScaleUp*2, Input_Mattress_Length + ScaleUp]);
+            details.push([Input_Mattress_Width + ScaleUp*2, Input_Mattress_Length + ScaleUp*2]);
+            details.push([Input_Mattress_Width + ScaleUp*2, Input_Mattress_Bold + ScaleUp*2]);
+            details.push([Input_Mattress_Bold + ScaleUp*2, Input_Mattress_Length + ScaleUp*2]);
         }
-    } else {
+    } else if (Input_Mattress_Width > Input_Textile_Width && Input_Bort_Value === 1)  {
         for (let i = 0; i < Input_Mattress_Amount * 2; i++) {
-            details.push([(Input_Mattress_Width / 2) + ScaleUp*2, Input_Mattress_Length + ScaleUp]);
-            details.push([(Input_Mattress_Width / 2) + ScaleUp*2, Input_Mattress_Length + ScaleUp]);
-            details.push([(Input_Mattress_Width/2) + ScaleUp*2, Input_Mattress_Bold + ScaleUp]);
-            details.push([Input_Mattress_Bold + ScaleUp*2, Input_Mattress_Length + ScaleUp]);
+            details.push([(Input_Mattress_Width / 2) + ScaleUp*2, Input_Mattress_Length + ScaleUp*2]);
+            details.push([(Input_Mattress_Width / 2) + ScaleUp*2, Input_Mattress_Length + ScaleUp*2]);
+            details.push([(Input_Mattress_Width/2) + ScaleUp*2, Input_Mattress_Bold + ScaleUp*2]);
+            details.push([Input_Mattress_Bold + ScaleUp*2, Input_Mattress_Length + ScaleUp*2]);
+        }
+    } else if (Input_Mattress_Width < Input_Textile_Width && Input_Bort_Value === 0)  {
+        for (let i = 0; i < Input_Mattress_Amount; i++) {
+            details.push([(Input_Mattress_Width+Input_Mattress_Bold*2) + ScaleUp*2, (Input_Mattress_Length + Input_Mattress_Bold*2) + ScaleUp*2]);
+            details.push([Input_Mattress_Width + ScaleUp*2, Input_Mattress_Length + ScaleUp*2]);
+
+        }
+    } else if (Input_Mattress_Width > Input_Textile_Width && Input_Bort_Value === 0)  {
+        for (let i = 0; i < Input_Mattress_Amount; i++) {
+            details.push([(Input_Mattress_Width/2+Input_Mattress_Bold*2) + ScaleUp*2, (Input_Mattress_Length + Input_Mattress_Bold*2) + ScaleUp*2]);
+            details.push([(Input_Mattress_Width/2+Input_Mattress_Bold*2) + ScaleUp*2, (Input_Mattress_Length + Input_Mattress_Bold*2) + ScaleUp*2]);
+            details.push([Input_Mattress_Width + ScaleUp*2, Input_Mattress_Length + ScaleUp*2]);
+
         }
     }
+    
     
     console.log("Список деталей:", details); // Добавляем вывод для проверки
     return details;
