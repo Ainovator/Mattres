@@ -11,7 +11,7 @@ let Bold_Second_Layer = parseInt(document.getElementById('bold-second-layer').va
 let Material_Third_Layer = parseInt(document.getElementById('material-third-layer').value) || 0;
 let Bold_Third_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
 let Input_Full_Work = parseInt(document.getElementById('input-full-work').value) || 0;
-let MarkUp = parseInt(document.getElementById('markup-output').value) || 0;
+let MarkUp = 30;
 let ComfortSelect = document.getElementById('comfort-select').value || 0;
 let inputStud = document.getElementById('input-stud').value || 0;
 let costStud = 0;
@@ -27,15 +27,15 @@ let Cost_Third_Layer = 0;
 let ScaleUp = 20;
 let Otbortovka = 0;
 const Cost_Foam = {
-    LL5020: 679,
-    HR3535: 682, 
+    LL5020: 722,
+    HR3535: 722, 
     ST2236: 572,
     ST3040: 572,
     EL4065: 648,
     HR3030: 682,
     HR3020: 682,
     VE3508: 644,
-    NP2300: 378,
+    NP2300: 410,
 };
 // #endregion
 
@@ -195,10 +195,8 @@ document.getElementById('bold-first-layer').addEventListener('input', () => {
 //Динамическое отслеживание толщины и материала второго слоя
 document.getElementById('material-second-layer').addEventListener('input', () => {
     Material_Second_Layer = parseInt(document.querySelector('#material-second-layer option:checked').textContent.trim().slice(2, 4)) || 0;
-    console.log(Material_Second_Layer)
     Cost_Second_Layer = Cost_Foam[document.querySelector('#material-second-layer option:checked').textContent.trim()] || 0;
     document.getElementById("comfort-select").value = 0;
-    console.log(Cost_Second_Layer)
     calculate();
 });
 
@@ -241,11 +239,11 @@ document.getElementById('bold-third-layer').addEventListener('input', () => {
     }
 });
 //Динамическое отслеживание наценки
-document.getElementById('markup-range').addEventListener('input', function() {
-    document.getElementById('markup-output').value = this.value;
-    MarkUp = parseInt(document.getElementById('markup-output').value) || 0;
-    calculate()
-});
+// document.getElementById('markup-range').addEventListener('input', function() {
+//     document.getElementById('markup-output').value = this.value;
+//     MarkUp = parseInt(document.getElementById('markup-output').value) || 0;
+//     calculate()
+// });
 //Динамические отслеживания изменения кант-борт-молния
 document.getElementById('input-cant').addEventListener('change', updateMattressImage);
 document.getElementById('input-bort').addEventListener('change', updateMattressImage);
@@ -263,7 +261,6 @@ function updateMattressImage() {
     const zipperSelect = document.getElementById('zipper-select').value;
     const mattressImage = document.getElementById('cant-image');
 
-    // console.log('Кант:', cantSwitch, 'Борт:', bortSwitch, 'Молния:', zipperSelect);
 
     if (zipperSelect === "0") { // Проверяем, если выбрано "Выбрать"
         mattressImage.src = 'images/Main.jpg'; // Изображение по умолчанию
@@ -283,7 +280,6 @@ function updateMattressImage() {
         mattressImage.src = 'images/Main.jpg'; // Изображение по умолчанию
     }
     
-    // console.log('Изображение обновлено:', mattressImage.src);
 }
 
 document.getElementById('purpose').addEventListener('change', function() {
@@ -296,14 +292,13 @@ document.getElementById('purpose').addEventListener('change', function() {
 // Функция расчета всех значений и вывод на фронт
 function calculate() {
 
-    // Считаем объем матраса
     let details = countDetails();
     let BF_Out = bestFit(Input_Textile_Width, details);
 
     // Рассчитываем стоимость отбортовки
     if (Input_Mattress_Bold >= 200) {
-        Otbortovka = ((Input_Mattress_Length / 1000) * (Input_Mattress_Bold / 1000) * 0.05 * 25 * 2 * 476) +
-                     ((Input_Mattress_Width / 1000) * (Input_Mattress_Bold / 1000) * 0.05 * 25 * 2 * 476);
+        Otbortovka = ((Input_Mattress_Length / 1000) * (Input_Mattress_Bold / 1000) * 0.05 * 25 * 2 * 478) +
+                     ((Input_Mattress_Width / 1000) * (Input_Mattress_Bold / 1000) * 0.05 * 25 * 2 * 478);
             if (Input_Mattress_Bold >= 200) {
             Otbortovka = ((Input_Mattress_Length / 1000) * (Input_Mattress_Bold / 1000) * 0.05 * 25 * 2 * 476) +
                             ((Input_Mattress_Width / 1000) * (Input_Mattress_Bold / 1000) * 0.05 * 25 * 2 * 476);
@@ -318,28 +313,21 @@ function calculate() {
         }
     
     }
-
+    
     let Full_Cost_First_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_First_Layer/1000)*(Material_First_Layer)*Cost_First_Layer;
-    console.log("Длина: ", Input_Mattress_Length, "Ширина: ", Input_Mattress_Width, "Толщина: ", Bold_First_Layer, "Материал: ", Material_First_Layer, "Цена: ", Cost_First_Layer);
     let Full_Cost_Second_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Second_Layer/1000)*(Material_Second_Layer)*Cost_Second_Layer;
     let Full_Cost_Third_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Third_Layer/1000)*(Material_Third_Layer)*Cost_Third_Layer;
     let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*Input_Mattress_Amount*1000)/1000;
-    zipperCost = (Input_Mattress_Length/1000 + Input_Mattress_Width/1000)*12;
+    zipperCost = (Input_Mattress_Length/1000 + Input_Mattress_Width/1000)*10;
     costStud = inputStud * 5;
-    console.log("Цена молнии: ", zipperCost)
     let Full_Work_Cost = Math.round(((Input_Full_Work*9*Input_Mattress_Amount)/1000)*1000);
     if (Input_Cant_Value === 1){
         cantCost = (Input_Mattress_Length/1000*2 + Input_Mattress_Width/1000*2)*10;
-        console.log("Цена канта: ",cantCost);
 
-    } else {
-        console.log("Кант не выбран: ");
-    }
+    } 
     //Расчёт стоимости ткани
     let Full_Textile_Cost = Math.round((Input_Textile_Cost * (BF_Out.rollLength/1000)*1000)/1000);
     let Full_Cost_Mattress = Math.round((((costStud + zipperCost + cantCost + Full_Textile_Cost + Full_Cost_Foam+Full_Work_Cost+Otbortovka*Input_Mattress_Amount)*1.2*1.6*((MarkUp/100)+1)*1000)/1000));
-    console.log(Full_Textile_Cost, Full_Cost_Foam, Full_Work_Cost, Otbortovka, MarkUp)
-    // console.log(MarkUp)
 
     // Выводим результат на фронт
     document.getElementById('textile-length').textContent = `Длина отреза ткани: ${BF_Out.rollLength} мм`;
@@ -381,8 +369,6 @@ function countDetails() {
         }
     }
     
-    
-    // console.log("Список деталей:", details); // Добавляем вывод для проверки
     return details;
 }
 //Раскладка деталей на рулоне
@@ -544,26 +530,32 @@ function copyToClipboard(text) {
     alert(`Скопировано в буфер обмена: ${text}`);
 }
 // Шаблон обновления слоёв
-function updateLayers(mt_1, bd_1, mt_2, bd_2, mt_3, bd_3){
+function updateLayers(mt_1, bd_1, mt_2, bd_2, mt_3, bd_3) {
+    // Первый слой
     document.getElementById("material-first-layer").value = mt_1;
     Material_First_Layer = parseInt(document.querySelector('#material-first-layer option:checked').textContent.trim().slice(2, 4)) || 0;
     Cost_First_Layer = Cost_Foam[document.querySelector('#material-first-layer option:checked').textContent.trim()] || 0;
     document.getElementById("bold-first-layer").value = bd_1;
     Bold_First_Layer = parseInt(document.getElementById('bold-first-layer').value) || 0;
+    console.log(Material_First_Layer, Bold_First_Layer, Cost_First_Layer);
 
+    // Второй слой
     document.getElementById("material-second-layer").value = mt_2;
     Material_Second_Layer = parseInt(document.querySelector('#material-second-layer option:checked').textContent.trim().slice(2, 4)) || 0;
     Cost_Second_Layer = Cost_Foam[document.querySelector('#material-second-layer option:checked').textContent.trim()] || 0;
     document.getElementById("bold-second-layer").value = bd_2;
     Bold_Second_Layer = parseInt(document.getElementById('bold-second-layer').value) || 0;
+    console.log(Material_Second_Layer, Bold_Second_Layer, Cost_Second_Layer);
 
+    // Третий слой
     document.getElementById("material-third-layer").value = mt_3;
-    Material_Second_Layer = parseInt(document.querySelector('#material-third-layer option:checked').textContent.trim().slice(2, 4)) || 0;
-    Cost_Second_Layer = Cost_Foam[document.querySelector('#material-third-layer option:checked').textContent.trim()] || 0;
+    Material_Third_Layer = parseInt(document.querySelector('#material-third-layer option:checked').textContent.trim().slice(2, 4)) || 0;
+    Cost_Third_Layer = Cost_Foam[document.querySelector('#material-third-layer option:checked').textContent.trim()] || 0;
     document.getElementById("bold-third-layer").value = bd_3;
     Bold_Third_Layer = parseInt(document.getElementById('bold-third-layer').value) || 0;
- 
+    console.log(Material_Third_Layer, Bold_Third_Layer, Cost_Third_Layer);
 }
+
 //Обновление слоёв от комфортности
 function UpdateLayersSelect() {
     switch (ComfortSelect) {
@@ -607,8 +599,8 @@ function UpdateLayersSelect() {
             updateLayers(0, 0, 0, 0 ,0 ,0);
             break;
     }
-
     updateMattressBold();
+    calculate()
 }
 //<Функциональный блок>
 // #endregion <Функциональный блок>

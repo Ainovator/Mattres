@@ -10,14 +10,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-        <!-- Подключение jQuery (перед toastr) -->
+    <!-- Подключение jQuery (перед toastr) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <!-- Подключение скрипта toastr -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
 
     
 
@@ -66,7 +66,7 @@
                 <input type="number" id="input-mattress-length" min="0" class="form-control" required inputmode="numeric" pattern="^[0-9]*$"">
             </div>
             <div class="form-group">
-                <label for="input-amount">Введите количество матрасов:</label>
+                <label for="input-amount">Введите количество одинаковых матрасов:</label>
                 <input type="number" id="input-mattress-amount" min ="0" class="form-control" value=1 required pattern="^[0-9]*$">
             </div>     
             <!-- <button type="button" onclick="addMattress()" class="btn-add" id="add-button" disabled>Добавить</button> -->
@@ -218,15 +218,15 @@
             <p id="textile-length"></p>
             <p id="full-textile-cost"></p>
             <p id="cost-foam"></p>
-            <p id="cost-work" style="margin-bottom: 50px"></p>
+            <p id="cost-work"></p>
             <p id="full-cost-mattress" ></p>
 
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="markup-range">Наценка:</label>
             <input type="range" id="markup-range" class="slider" min="30" max="75" step="5" value="30">
             <output id="markup-output">30</output>%
-        </div>
+        </div> -->
       
         
         <div id="visualization">
