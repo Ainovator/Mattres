@@ -54,6 +54,7 @@
             </div>
             <div id="cant-image-container" class="image-container">
                 <img id="cant-image" src="images/Main.jpg" alt="Кант изображение" class="cant-image">
+                
                 <h2>Размеры</h2>
                 <div class="form-group">
                     <label for="input-width">Введите ширину матраса в миллиметрах:</label>
@@ -75,6 +76,10 @@
             <div class="form-group">
                 <label for="input-amount">Введите цену ткани:</label>
                 <input type="number" min="0" id="input-textile-cost" class="form-control" required pattern="^[0-9]*$">
+            </div>
+            <div class="form-group">
+                <label for="input-amount">Введите количество пуговиц:</label>
+                <input type="number" min="0" id="input-stud" class="form-control" required pattern="^[0-9]*$">
             </div>
 
             <h2>Слои пены</h2>
@@ -191,9 +196,23 @@
         <div class="form-group" >
             <label for="input-length">Введите время всех работ в минутах:</label>
             <input type="number" id="input-full-work" min="0" class="form-control" required inputmode="numeric" pattern="[0-9]">
+            
         </div>
 
-        
+        <h2>Комментарии</h2>
+        <div class = "label-select">
+            <select id="purpose" class="form-control-2" style ="margin-bottom: 20px; "name="material">
+                <option value="0" selected>Предназначение</option>
+                <option value="1">На кровать</option>
+                <option value="2">На подоконник</option>
+                <option value="3">На пуфик</option>
+                <option value="4">Другое</option>
+            </select>   
+        </div>
+        <div class="form-group">
+            <label for="input-field">Комментарий к изделию</label>
+            <textarea id="input-field" placeholder="Комментарий к изделию"></textarea>
+        </div>
         <h2>Результаты</h2>
         <div id="results">
             <p id="textile-length"></p>

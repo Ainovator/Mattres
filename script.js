@@ -13,9 +13,13 @@ let Bold_Third_Layer = parseInt(document.getElementById('bold-third-layer').valu
 let Input_Full_Work = parseInt(document.getElementById('input-full-work').value) || 0;
 let MarkUp = parseInt(document.getElementById('markup-output').value) || 0;
 let ComfortSelect = document.getElementById('comfort-select').value || 0;
+let inputStud = document.getElementById('input-stud').value || 0;
+let costStud = 0;
 let alertShown = false; 
 let Input_Textile_Width = 1390;
-let Input_Cant_Value = 0; 
+let Input_Cant_Value = 0;
+let cantCost = 0; 
+let zipperCost = 0;
 let Input_Bort_Value = 0; 
 let Cost_First_Layer = 0;
 let Cost_Second_Layer = 0;
@@ -64,6 +68,11 @@ document.getElementById('input-mattress-width').addEventListener('blur', () => {
 //Динамическое отслеживание цены ткани
 document.getElementById('input-textile-cost').addEventListener('input', () => {
     Input_Textile_Cost = parseInt(document.getElementById('input-textile-cost').value) || 0;
+    calculate();
+});
+//Динамическое отслеживание количества пуговиц
+document.getElementById('input-stud').addEventListener('input', () => {
+    inputStud = parseInt(document.getElementById('input-stud').value) || 0;
     calculate();
 });
 //Динамическое отслеживание комфортности
@@ -276,6 +285,14 @@ function updateMattressImage() {
     
     // console.log('Изображение обновлено:', mattressImage.src);
 }
+
+document.getElementById('purpose').addEventListener('change', function() {
+    const selectedText = this.options[this.selectedIndex].text; // Получаем текст выбранного option
+    const inputField = document.getElementById('input-field');
+
+    // Вставляем выбранный текст в текстовое поле
+    inputField.value = selectedText;
+});
 // Функция расчета всех значений и вывод на фронт
 function calculate() {
 
@@ -283,7 +300,7 @@ function calculate() {
     let details = countDetails();
     let BF_Out = bestFit(Input_Textile_Width, details);
 
-    // Рассчитываем стоимость слоев
+    // Рассчитываем стоимость отбортовки
     if (Input_Mattress_Bold >= 200) {
         Otbortovka = ((Input_Mattress_Length / 1000) * (Input_Mattress_Bold / 1000) * 0.05 * 25 * 2 * 476) +
                      ((Input_Mattress_Width / 1000) * (Input_Mattress_Bold / 1000) * 0.05 * 25 * 2 * 476);
@@ -307,10 +324,20 @@ function calculate() {
     let Full_Cost_Second_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Second_Layer/1000)*(Material_Second_Layer)*Cost_Second_Layer;
     let Full_Cost_Third_Layer = (Input_Mattress_Length/1000)*(Input_Mattress_Width/1000)*(Bold_Third_Layer/1000)*(Material_Third_Layer)*Cost_Third_Layer;
     let Full_Cost_Foam = Math.round((Full_Cost_First_Layer + Full_Cost_Second_Layer + Full_Cost_Third_Layer)*Input_Mattress_Amount*1000)/1000;
+    zipperCost = (Input_Mattress_Length/1000 + Input_Mattress_Width/1000)*12;
+    costStud = inputStud * 5;
+    console.log("Цена молнии: ", zipperCost)
     let Full_Work_Cost = Math.round(((Input_Full_Work*9*Input_Mattress_Amount)/1000)*1000);
+    if (Input_Cant_Value === 1){
+        cantCost = (Input_Mattress_Length/1000*2 + Input_Mattress_Width/1000*2)*10;
+        console.log("Цена канта: ",cantCost);
+
+    } else {
+        console.log("Кант не выбран: ");
+    }
     //Расчёт стоимости ткани
     let Full_Textile_Cost = Math.round((Input_Textile_Cost * (BF_Out.rollLength/1000)*1000)/1000);
-    let Full_Cost_Mattress = Math.round((((Full_Textile_Cost + Full_Cost_Foam+Full_Work_Cost+Otbortovka*Input_Mattress_Amount)*1.2*1.6*((MarkUp/100)+1)*1000)/1000));
+    let Full_Cost_Mattress = Math.round((((costStud + zipperCost + cantCost + Full_Textile_Cost + Full_Cost_Foam+Full_Work_Cost+Otbortovka*Input_Mattress_Amount)*1.2*1.6*((MarkUp/100)+1)*1000)/1000));
     console.log(Full_Textile_Cost, Full_Cost_Foam, Full_Work_Cost, Otbortovka, MarkUp)
     // console.log(MarkUp)
 

@@ -106,6 +106,41 @@ h1 {
     color: #333;
 }
 
+.text-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ff0000; /* Красная окантовка */
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: #fff;
+    color: #333;
+    height: 120px;
+}
+
+.text-control label {
+    display: grid;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+#input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ff0000; /* Красная окантовка */
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: #fff;
+    color: #333;
+    height: 120px;
+    box-sizing: border-box;
+    text-align: left; /* Выравниваем текст по левому краю */
+    vertical-align: top; /* Выравниваем текст по верхнему краю */
+    resize: none; /* Отключаем изменение размера поля */
+    overflow-y: auto; /* Добавляем прокрутку по вертикали, если текст не помещается */
+}
+
+
 .form-control:focus {
     border-color: #ff0000; /* Красная окантовка при фокусе */
     outline: none;
